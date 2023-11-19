@@ -11,11 +11,17 @@ Celem projektu jest stworzenie aplikacji mobilnej o nazwie „SzaloneBloczki”,
 Aplikacja mobilna powinna zawierać następujące podstawowe funkcjonalności:
 
 - Możliwość tworzenia własnych schematów blokowych.
+
 - Wizualizację algorytmów na podstawie utworzonych schematów blokowych – obsługa przynajmniej podstawowych algorytmów sortowania.
+
 - Możliwość eksportu schematu blokowego do formatu PDF.
+
 - Podgląd zmiennych w czasie wizualizacji algorytmu.
+
 - Pracę krokową i ciągłą – użytkownik może wybrać tryb pracy krokowej lub tryb ciągły.
+
 - Odczyt i zapis utworzonych schematów blokowych.
+
 - Eksport algorytmu do wybranego języka programowania.
 
 ## Funkcjonalność Dodatkowa
@@ -26,38 +32,24 @@ Jako funkcjonalność dodatkową, zapewniającą „efekt wow” jest obsługa w
 
 Do realizacji projektu "SzaloneBloczki" wykorzystamy następujące technologie po stronie front-endowej:
 
-1. **React Native:** Główną platformą do tworzenia aplikacji mobilnej jest React Native. Umożliwia on tworzenie aplikacji na platformy Android i iOS, używając języka JavaScript i biblioteki React.
+1.  **React Native:** Główną platformą do tworzenia aplikacji mobilnej jest React Native. Umożliwia on tworzenie aplikacji na platformy Android i iOS, używając języka JavaScript i biblioteki React.
 
-2. **Zustand:** Do zarządzania globalnym stanem aplikacji wykorzystamy bibliotekę Zustand. Jest to minimalistyczna i wydajna biblioteka zarządzania stanem, idealnie integrująca się z React.
+2.  **Zustand:** Do zarządzania globalnym stanem aplikacji wykorzystamy bibliotekę Zustand. Jest to minimalistyczna i wydajna biblioteka zarządzania stanem, idealnie integrująca się z React.
 
-## Technologie Back-end
+## Uruchamianie Projektu
 
-Aby zrealizować cele projektu "SzaloneBloczki", zespół back-endu skorzysta z następujących technologii:
+Aby uruchomić projekt "SzaloneBloczki", wykonaj poniższe kroki:
 
-1. **Java:** Jako główny język programowania do budowy stabilnych i skalowalnych serwerów.
+### Instalacja zależności i uruchomienie projektu
 
-2. **Docker:** Technologia konteneryzacji, umożliwiająca pakowanie aplikacji, ich zależności i środowiska wykonawczego w izolowane kontenery.
+Upewnij się, że masz zainstalowanego [Yarn](https://yarnpkg.com/) oraz [Expo CLI](https://docs.expo.dev/workflow/expo-cli/) na swoim systemie.
 
-3. **Javalin:** Lekki framework webowy dla Javy, idealny do tworzenia prostych i efektywnych serwerów HTTP.
+Następnie, przejdź do katalogu projektu w terminalu i zainstaluj zależności, wpisując następującą komendę:
 
-4. **Ebean:** Framework ORM dla Javy ułatwiający pracę z bazami danych.
+    yarn  install
 
-## Wybór Technologii
+Po zainstalowaniu zależności, uruchom projekt za pomocą komendy:
 
-Wybór technologii został uzasadniony kilkoma kluczowymi czynnikami, takimi jak szybkość rozwoju, efektywność, język programowania oraz wsparcie społeczności deweloperskiej.
+    yarn expo start
 
-Dzięki wybranym technologiom zespół będzie w stanie efektywnie i skutecznie zrealizować cele projektu "SzaloneBloczki", dostarczając użytkownikom aplikację mobilną, która umożliwi eksplorację algorytmów w sposób interaktywny i intuicyjny.
-
----
-
-### Autorzy
-
-Zespół Front-end:
-
-- Aleksandra Kacprzak
-- Denis Poczęty
-
-Zespół Back-end:
-
-- Denis Śmietana
-- Łukasz Pyszny
+Po uruchomieniu, aplikacja będzie dostępna pod adresem [Expo Go](https://expo.dev/client) na Twoim urządzeniu mobilnym. Alternatywnie, możesz skorzystać z emulatorów dostępnych w środowisku Expo.
