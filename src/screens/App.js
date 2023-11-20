@@ -4,9 +4,7 @@ import { StyleSheet, Text, View } from "react-native";
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text className="bg-pink-700">
-        Open up App.js to start working on your app!
-      </Text>
+      <Text className="bg-slate-400">Szalone bloczki </Text>
       <StatusBar style="auto" />
     </View>
   );
