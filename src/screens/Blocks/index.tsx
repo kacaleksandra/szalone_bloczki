@@ -1,7 +1,9 @@
-import { Text } from "@ui-kitten/components";
-import React, { useState, useEffect } from "react";
+import { Text, Button } from "@ui-kitten/components";
+import React, { useState, useEffect, useRef } from "react";
 import { ScrollView, View, StyleSheet } from "react-native";
-import { Int32 } from "react-native/Libraries/Types/CodegenTypes";
+import { Image } from "react-native-svg";
+import ViewShot from "react-native-view-shot";
+import axios from "axios";
 
 //Block diagram view
 export default function Blocks() {
@@ -24,12 +26,39 @@ export default function Blocks() {
     setTableContent(helper);
   };
 
+  const uploadImage = async (imageUri: String) => {
+    try {
+      console.log(imageUri);
+      const formData = new FormData();
+      formData.append("image", {
+        uri: imageUri,
+        name: "photo.jpg",
+        type: "image/jpg", // Adjust the type as per your image format
+      });
+
+      await axios
+        .post("http://192.168.5.10:3001/upload", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+        });
+    } catch (error) {
+      console.error("Upload failed:", error);
+      // Handle error scenarios
+    }
+  };
+
   //to pewnie do innego pliku pójdzie
   const styles = StyleSheet.create({
     container: {
       width: WIDTH * SIZE + 2 * BORDERWIDTH,
       borderColor: "blue",
       borderWidth: 1,
+      margin: 5,
+      marginTop: 40,
     },
     row: {
       flexDirection: "row",
@@ -43,6 +72,11 @@ export default function Blocks() {
       justifyContent: "center",
       alignItems: "center",
     },
+    buttonView: {
+      position: "absolute",
+      top: 40,
+      right: 0,
+    },
   });
 
   useEffect(() => {
@@ -51,12 +85,21 @@ export default function Blocks() {
     setArrayValue(1, 3, "End");
   }, []);
 
+  const viewShot = useRef(null);
+  const [uri, setUri] = useState("");
+
+  const captureScreen = () => {
+    //before capture, change style of the table, like delete borders
+
+    viewShot.current.capture().then((uri) => {
+      setUri(uri);
+      uploadImage(uri);
+    });
+    console.log(uri);
+  };
   const rows = Array.from({ length: HEIGHT }).map((_, rowIndex) => {
-    // Generate an array of columns for each row
     const columns = Array.from({ length: WIDTH }).map((_, colIndex) => (
       <View key={`${rowIndex}-${colIndex}`} style={styles.square}>
-        {/* <Text>Row: {rowIndex}</Text>
-        <Text>Col: {colIndex}</Text> */}
         <Text>{tableContent[rowIndex][colIndex]}</Text>
       </View>
     ));
@@ -66,15 +109,21 @@ export default function Blocks() {
       </View>
     );
   });
+
   return (
-    <ScrollView
-      maximumZoomScale={2}
-      minimumZoomScale={0.5}
-      // contentContainerStyle={{  }}
-      contentContainerStyle={styles.container}
-    >
-      {rows}
-      {/* <ScrollView contentContainerStyle={styles.container}>{rows}</ScrollView> */}
-    </ScrollView>
+    <>
+      <ScrollView
+        maximumZoomScale={2}
+        minimumZoomScale={0.5}
+        contentContainerStyle={styles.container}
+      >
+        <ViewShot ref={viewShot} options={{ format: "jpg", quality: 0.9 }}>
+          {rows}
+        </ViewShot>
+      </ScrollView>
+      <View style={styles.buttonView}>
+        <Button onPress={captureScreen}>Save as Image</Button>
+      </View>
+    </>
   );
 }
