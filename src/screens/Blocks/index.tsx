@@ -85,18 +85,21 @@ export default function Blocks() {
     setArrayValue(1, 3, "End");
   }, []);
 
-  const viewShot = useRef(null);
-  const [uri, setUri] = useState("");
+  const viewShot = useRef<any>(null);
+  const [uri, setUri] = useState<string>("");
 
   const captureScreen = () => {
-    //before capture, change style of the table, like delete borders
-
-    viewShot.current.capture().then((uri) => {
-      setUri(uri);
-      uploadImage(uri);
-    });
-    console.log(uri);
+    if (viewShot.current != null) {
+      viewShot.current.capture().then((uri: string) => {
+        setUri(uri);
+        uploadImage(uri);
+      });
+      console.log(uri);
+    } else {
+      return;
+    }
   };
+
   const rows = Array.from({ length: HEIGHT }).map((_, rowIndex) => {
     const columns = Array.from({ length: WIDTH }).map((_, colIndex) => (
       <View key={`${rowIndex}-${colIndex}`} style={styles.square}>
