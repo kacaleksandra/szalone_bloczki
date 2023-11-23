@@ -4,7 +4,7 @@ import { Layout, Text, Input, Button } from "@ui-kitten/components";
 const windowWidth = Dimensions.get("window").width;
 
 //MAIN PAGE
-export default function Home() {
+export default function Home({ navigation }: any) {
   return (
     <Layout
       style={{ flex: 1, justifyContent: "space-around", alignItems: "center" }}
@@ -28,7 +28,9 @@ export default function Home() {
         </View>
         <View>
           <Button>Zaloguj mnie</Button>
-          <Text category="s2">Nie masz konta? Zarejestruj się</Text>
+          <Text category="s2" onPress={() => navigation.navigate("Register")}>
+            Nie masz konta? Zarejestruj się
+          </Text>
         </View>
       </View>
     </Layout>
