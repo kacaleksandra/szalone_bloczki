@@ -28,7 +28,11 @@ export default function Home({ navigation }: any) {
         </View>
         <View>
           <Button>Zaloguj mnie</Button>
-          <Text category="s2" onPress={() => navigation.navigate("Register")}>
+          <Text
+            category="s2"
+            style={{ textAlign: "center", padding: 16 }}
+            onPress={() => navigation.navigate("Register")}
+          >
             Nie masz konta? Zarejestruj się
           </Text>
         </View>
