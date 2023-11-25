@@ -2,7 +2,6 @@ import React from "react";
 import { View } from "react-native";
 import { Text, Input } from "@ui-kitten/components";
 import { Controller } from "react-hook-form";
-
 import { Control, FieldErrors } from "react-hook-form";
 
 // Assuming FormData is defined somewhere
