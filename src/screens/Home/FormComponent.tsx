@@ -4,7 +4,6 @@ import { Text, Input } from "@ui-kitten/components";
 import { Controller } from "react-hook-form";
 import { Control, FieldErrors } from "react-hook-form";
 
-// Assuming FormData is defined somewhere
 type FormData = {
   login: string;
   password: string;
@@ -34,7 +33,7 @@ export const FormComponent: React.FC<FormComponentProps> = ({
     />
     {errors && errors.login && (
       <Text style={{ color: "red", textAlign: "center", marginBottom: "2%" }}>
-        Login jest wymagany
+        {errors.login.message}
       </Text>
     )}
     <Controller
@@ -52,7 +51,7 @@ export const FormComponent: React.FC<FormComponentProps> = ({
     />
     {errors && errors.password && (
       <Text style={{ color: "red", textAlign: "center", marginBottom: "2%" }}>
-        Hasło jest wymagane
+        {errors.password.message}
       </Text>
     )}
   </View>

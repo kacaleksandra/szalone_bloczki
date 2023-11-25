@@ -15,8 +15,8 @@ const windowWidth = Dimensions.get("window").width;
 
 // Yup schema
 const schema = object().shape({
-  login: string().required("Login is required"),
-  password: string().required("Password is required"),
+  login: string().required("Login jest wymagany"),
+  password: string().required("Hasło jest wymagane"),
 });
 
 // MAIN PAGE
