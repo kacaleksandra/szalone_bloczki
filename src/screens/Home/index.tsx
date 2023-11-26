@@ -35,6 +35,7 @@ export default function Home({ navigation }: any) {
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
     console.log(data);
+    navigation.navigate("MainMenu");
   };
 
   return (

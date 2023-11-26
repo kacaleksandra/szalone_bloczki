@@ -42,6 +42,7 @@ export default function Home({ navigation }: any) {
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
     console.log(data);
+    navigation.navigate("MainMenu");
   };
 
   return (
@@ -52,7 +53,6 @@ export default function Home({ navigation }: any) {
             Rejestracja
           </Text>
         </View>
-
         <FormComponent control={control as Control<FormData>} errors={errors} />
         <View className="pb-5">
           <Button onPress={handleSubmit(onSubmit)}>Zarejestruj się</Button>
