@@ -2,6 +2,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Home from "../../screens/Home";
 import Register from "../../screens/Register";
 import MainMenu from "../../screens/MainMenu";
+import MyProjects from "../../screens/MyProjects";
+import NewProject from "../../screens/NewProject";
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +24,16 @@ export default function Navigator() {
         name="MainMenu"
         component={MainMenu}
         options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="MyProjects"
+        component={MyProjects}
+        options={{ title: "Moje projekty" }}
+      />
+      <Stack.Screen
+        name="NewProject"
+        component={NewProject}
+        options={{ title: "Nowy projekt" }}
       />
     </Stack.Navigator>
   );
