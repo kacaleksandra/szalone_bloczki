@@ -25,7 +25,6 @@ export default function MainMenu({ navigation }: any) {
         <Button
           style={{
             ...styles.button,
-            backgroundColor: "#e1f0fa",
           }}
           size="giant"
           appearance="outline"
