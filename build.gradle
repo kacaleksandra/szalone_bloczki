@@ -1,0 +1,72 @@
+plugins {
+    id 'java'
+    id 'io.ebean' version '13.25.1'
+}
+
+group 'pl.szalone.bloczki'
+version '1.0.0'
+
+compileJava {
+    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_11
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    //Main Core
+    implementation 'io.javalin:javalin:5.6.3'
+    //Logging Facade and Its Implementation
+    implementation 'org.slf4j:slf4j-simple:1.7.36'
+    implementation 'ch.qos.logback:logback-classic:1.4.4'
+    //JSON Mapper
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
+
+    //Database ORM - Ebean
+    implementation 'io.ebean:ebean-mysql:13.25.1'
+    //DDL generator for development purposes
+    implementation 'io.ebean:ebean-ddl-generator:13.25.1'
+    annotationProcessor 'io.ebean:querybean-generator:13.25.1'
+
+    //JWT Tokens Validation
+    implementation 'com.auth0:java-jwt:4.2.2'
+    //BCrypt password hashing
+    implementation 'at.favre.lib:bcrypt:0.10.2'
+
+    // PDF utilities
+    implementation 'org.apache.pdfbox:pdfbox:2.0.30'
+
+    //MySQL Driver
+    implementation 'mysql:mysql-connector-java:8.0.32'
+    //Annotations Utility via Lombok
+    compileOnly 'org.projectlombok:lombok:1.18.26'
+    annotationProcessor 'org.projectlombok:lombok:1.18.26'
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+tasks.register('uberJar', Jar) {
+    archiveClassifier = 'uber'
+
+    from sourceSets.main.output
+
+    dependsOn configurations.runtimeClasspath
+    from {
+        configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) }
+    }
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
+
+    manifest {
+        attributes 'Main-Class': 'pl.szalone.bloczki.Main'
+    }
+}

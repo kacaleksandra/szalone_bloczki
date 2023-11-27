@@ -1,0 +1,13 @@
+version: '3.3'
+
+services:
+  bloczki-server:
+    env_file:
+      - .env
+    container_name: bloczki-server
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - '${SERVER_APP_PORT}:8080'
+    restart: always
