@@ -41,11 +41,5 @@ const styles = StyleSheet.create({
   button: {
     borderRadius: 15,
     height: 100,
-    shadowColor: "grey",
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
-    shadowOpacity: 0.25,
   },
 });
