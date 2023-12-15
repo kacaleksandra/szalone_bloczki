@@ -27,5 +27,19 @@ export const blocksData = [
       </Text>
     ),
   },
+  {
+    id: 3,
+    name: "if",
+    variableName: "variable name",
+    variableValue: "variable value",
+    getContent: () => (
+      <Text>
+        If
+        <Input placeholder="name" /> bigger than <Input placeholder="value" />
+      </Text>
+    ),
+    hasInside: true,
+    Inside: [],
+  },
   // More blocks...
 ];

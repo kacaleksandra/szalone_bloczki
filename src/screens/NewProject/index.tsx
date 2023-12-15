@@ -10,26 +10,89 @@ type Block = {
   getContent: () => JSX.Element;
   variableName?: string;
   variableValue?: string;
+  hasInside?: boolean;
+  inside: Block[];
   key: number;
 };
 
 export default function NewProject() {
   const [isListVisible, setIsListVisible] = useState(false);
   const [selectedFruit, setSelectedFruit] = useState("apple");
+  const [blocksCounter, setBlocksCounter] = useState(0);
 
   const [blocks, setBlocks] = useState<Block[]>([]);
 
   const addBlock = (block: number) => {
-    setBlocks([...blocks, { ...blocksData[block], key: blocks.length }]);
+    if (blocks[blocks.length - 1]?.hasInside) {
+      blocks[blocks.length - 1].inside.push({
+        ...blocksData[block],
+        key: blocksCounter,
+        inside: [],
+      });
+      setBlocksCounter(blocksCounter + 1);
+      setBlocks([...blocks]);
+      setIsListVisible(false);
+      return;
+    }
+    setBlocks([
+      ...blocks,
+      { ...blocksData[block], key: blocksCounter, inside: [] },
+    ]);
+    setBlocksCounter(blocksCounter + 1);
     setIsListVisible(false);
   };
 
-  const displayList = () => {
+  const moveUp = (key: number) => {
+    console.log(key);
+  };
+
+  const renderList = (_blocks: Block[], mainList: Boolean = false) => {
     return (
-      // <View>
-      //   <Text>{block.name}</Text>
-      //   <Text>{block.description}</Text>
-      // </View>
+      <FlatList
+        data={_blocks}
+        renderItem={({ item, index }) => (
+          <>
+            <View>
+              <Text>{item.name}</Text>
+              <Text>
+                {item.getContent()}
+                <View>
+                  {/* // buttons */}
+                  {index === _blocks.length - 1 &&
+                    !mainList && ( //if it's the last element of the list, and the list is not the main one
+                      <Button onPress={() => moveUp(item.key)}>
+                        left arrow
+                      </Button>
+                    )}
+                  <Button
+                    onPress={() => {
+                      console.log("Deleted item", item.key);
+                    }}
+                  >
+                    Delete item
+                  </Button>
+                </View>
+              </Text>
+            </View>
+            <Divider />
+            <View
+              style={{
+                marginLeft: 10,
+                paddingLeft: 10,
+                borderLeftColor: "red",
+                borderLeftWidth: 3,
+              }}
+            >
+              {item.hasInside && renderList(item.inside)}
+            </View>
+          </>
+        )}
+      />
+    );
+  };
+
+  const displayBlockPicker = () => {
+    return (
       <View
         style={{
           position: "absolute",
@@ -57,19 +120,8 @@ export default function NewProject() {
     >
       <Text>New project </Text>
       <Button onPress={() => setIsListVisible(true)}>Add new step</Button>
-      {isListVisible && displayList()}
-      <FlatList
-        data={blocks}
-        renderItem={({ item }) => (
-          <>
-            <View>
-              <Text>{item.name}</Text>
-              <Text>{item.getContent()}</Text>
-            </View>
-            <Divider />
-          </>
-        )}
-      />
+      {isListVisible && displayBlockPicker()}
+      {renderList(blocks, true)}
     </View>
   );
 }
