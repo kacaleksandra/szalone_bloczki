@@ -2,18 +2,21 @@ import { View, Text, SectionList, FlatList } from "react-native";
 import { useState } from "react";
 import { blocksData } from "./blocksData";
 import BlockPicker from "./blockPicker";
+import { Block } from "./blocksType";
+import { blocksOperations } from "./blocksOperations";
 import { Button, Divider } from "@ui-kitten/components";
+import { set } from "react-hook-form";
 
-type Block = {
-  id: number;
-  name: string;
-  getContent: () => JSX.Element;
-  variableName?: string;
-  variableValue?: string;
-  hasInside?: boolean;
-  inside: Block[];
-  key: number;
-};
+// type Block = {
+//   id: number;
+//   name: string;
+//   getContent: () => JSX.Element;
+//   variableName?: string;
+//   variableValue?: string;
+//   hasInside?: boolean;
+//   inside: Block[];
+//   key: number;
+// };
 
 export default function NewProject() {
   const [isListVisible, setIsListVisible] = useState(false);
@@ -23,27 +26,29 @@ export default function NewProject() {
   const [blocks, setBlocks] = useState<Block[]>([]);
 
   const addBlock = (block: number) => {
-    if (blocks[blocks.length - 1]?.hasInside) {
-      blocks[blocks.length - 1].inside.push({
-        ...blocksData[block],
-        key: blocksCounter,
-        inside: [],
-      });
-      setBlocksCounter(blocksCounter + 1);
-      setBlocks([...blocks]);
-      setIsListVisible(false);
-      return;
-    }
-    setBlocks([
-      ...blocks,
-      { ...blocksData[block], key: blocksCounter, inside: [] },
-    ]);
+    const newBlock: Block = {
+      ...blocksData[block],
+      key: blocksCounter,
+      inside: [],
+    };
+    blocksOperations.addBlockToEnd(blocks, newBlock);
     setBlocksCounter(blocksCounter + 1);
+    setBlocks([...blocks]);
     setIsListVisible(false);
   };
+  const deleteBlock = (objectKey: number) => {
+    console.log("deleting object with key: " + objectKey);
+    blocksOperations.deleteObject(blocks, objectKey);
+    setBlocks([...blocks]);
+  };
 
-  const moveUp = (key: number) => {
-    console.log(key);
+  const moveUp = (objectKey: number) => {
+    const movedObject = blocksOperations.moveObjectUp(blocks, objectKey);
+    if (movedObject) {
+      setBlocks([...blocks]);
+    } else {
+      console.log("Object not found");
+    }
   };
 
   const renderList = (_blocks: Block[], mainList: Boolean = false) => {
@@ -66,7 +71,7 @@ export default function NewProject() {
                     )}
                   <Button
                     onPress={() => {
-                      console.log("Deleted item", item.key);
+                      deleteBlock(item.key);
                     }}
                   >
                     Delete item
