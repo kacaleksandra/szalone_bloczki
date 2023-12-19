@@ -3,6 +3,7 @@ import Home from "../../screens/Home";
 import Register from "../../screens/Register";
 import MainMenu from "../../screens/MainMenu";
 import MyProjects from "../../screens/MyProjects";
+import EditProject from "../../screens/EditProject";
 import NewProject from "../../screens/NewProject";
 
 const Stack = createNativeStackNavigator();
@@ -34,6 +35,11 @@ export default function Navigator() {
         name="NewProject"
         component={NewProject}
         options={{ title: "Nowy projekt" }}
+      />
+      <Stack.Screen
+        name="EditProject"
+        component={EditProject}
+        options={{ title: "Edycja projektu" }}
       />
     </Stack.Navigator>
   );
