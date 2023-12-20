@@ -3,7 +3,6 @@ import { View } from "react-native";
 import { Text, Input } from "@ui-kitten/components";
 import { Controller } from "react-hook-form";
 import { Control, FieldErrors } from "react-hook-form";
-import { error } from "console";
 
 type FormData = {
   login: string;

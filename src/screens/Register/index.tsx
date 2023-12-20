@@ -1,12 +1,10 @@
 import React from "react";
-import { Image, View, Dimensions, Alert } from "react-native";
+import { View, Dimensions, Alert } from "react-native";
 import { Layout, Text, Button } from "@ui-kitten/components";
 import { object, string } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, SubmitHandler, Control } from "react-hook-form";
 import { FormComponent } from "./FormComponent";
-import useAccessTokenStore from "../../composables/store";
-import { getApiURL } from "../../composables/getApiURL";
 import { handleAuth } from "../../composables/handleAuth";
 
 type FormData = {

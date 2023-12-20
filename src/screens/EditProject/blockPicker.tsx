@@ -1,4 +1,4 @@
-import { View, Text, SectionList } from "react-native";
+import { View } from "react-native";
 import { useState } from "react";
 import { blocksData } from "./blocksData";
 import { Button } from "@ui-kitten/components";
@@ -12,7 +12,6 @@ type BlockPickerProps = {
 const BlockPicker = (props: BlockPickerProps) => {
   const [selectedBlock, SetselectedBlock] = useState(0);
 
-  //ta funkcja uruchamia się dopiero po zakończeniu animacji wyboru, co jest głupie
   const handleValueChange = (itemValue: number) => {
     //console.log(itemValue);
     SetselectedBlock(itemValue);

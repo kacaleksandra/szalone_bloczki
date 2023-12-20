@@ -1,7 +1,6 @@
 import { Text, Button } from "@ui-kitten/components";
 import React, { useState, useEffect, useRef } from "react";
 import { ScrollView, View, StyleSheet } from "react-native";
-import { Image } from "react-native-svg";
 import ViewShot from "react-native-view-shot";
 import axios from "axios";
 

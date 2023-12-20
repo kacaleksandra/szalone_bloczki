@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Image,
-  View,
-  Dimensions,
-  Alert,
-  Keyboard,
-  StyleSheet,
-} from "react-native";
+import { Image, View, Dimensions, Alert, Keyboard } from "react-native";
 import { Layout, Text, Button } from "@ui-kitten/components";
 import { object, string } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";

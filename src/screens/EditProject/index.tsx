@@ -1,4 +1,4 @@
-import { View, Text, SectionList, FlatList } from "react-native";
+import { View, Text, FlatList } from "react-native";
 import { useState } from "react";
 import { blocksData } from "./blocksData";
 import BlockPicker from "./blockPicker";
