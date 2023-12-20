@@ -1,10 +1,12 @@
 import React from "react";
-import { Image, View, Dimensions } from "react-native";
+import { Image, View, Dimensions, Alert } from "react-native";
 import { Layout, Text, Button } from "@ui-kitten/components";
 import { object, string } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, SubmitHandler, Control } from "react-hook-form";
 import { FormComponent } from "./FormComponent";
+import { useAccessTokenStore } from "../../composables/store";
+import { getApiURL } from "../../composables/getApiURL";
 
 type FormData = {
   login: string;
@@ -33,9 +35,41 @@ export default function Home({ navigation }: any) {
     },
   });
 
+  const handleLogin = async (data: FormData) => {
+    try {
+      const apiUrl = getApiURL();
+      const loginEndpoint = "login";
+
+      const response = await fetch(`${apiUrl}${loginEndpoint}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          login: data.login,
+          password: data.password,
+        }),
+      });
+
+      const responseData = await response.json();
+
+      if (response.ok) {
+        // Login successful, save the access token
+        useAccessTokenStore.setState({
+          accessToken: responseData.access_token,
+        });
+
+        navigation.navigate("MainMenu");
+      } else {
+        Alert.alert("Błąd", "Błąd logowania");
+      }
+    } catch (error) {
+      Alert.alert("Błąd", "Błąd logowania");
+    }
+  };
+
   const onSubmit: SubmitHandler<FormData> = (data) => {
-    console.log(data);
-    navigation.navigate("MainMenu");
+    handleLogin(data);
   };
 
   return (

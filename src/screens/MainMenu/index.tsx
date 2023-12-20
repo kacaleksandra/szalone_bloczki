@@ -1,8 +1,15 @@
 import { View, Image } from "react-native";
 import { Dimensions, StyleSheet } from "react-native";
 import { Button } from "@ui-kitten/components";
+import useAccessTokenStore from "../../composables/store";
 
 export default function MainMenu({ navigation }: any) {
+  const logout = () => {
+    useAccessTokenStore.setState({
+      accessToken: "",
+    });
+    navigation.navigate("Home");
+  };
   return (
     <View className="w-full h-full flex justify-around pb-14 bg-white">
       <View className="w-full h-1/2 mt-10">
@@ -31,6 +38,16 @@ export default function MainMenu({ navigation }: any) {
           onPress={() => navigation.navigate("MyProjects")}
         >
           Moje zapisane projekty
+        </Button>
+        <Button
+          style={{
+            ...styles.button,
+          }}
+          size="giant"
+          appearance="outline"
+          onPress={() => logout()}
+        >
+          Wyloguj
         </Button>
       </View>
     </View>
