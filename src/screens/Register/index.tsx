@@ -7,6 +7,7 @@ import { useForm, SubmitHandler, Control } from "react-hook-form";
 import { FormComponent } from "./FormComponent";
 import useAccessTokenStore from "../../composables/store";
 import { getApiURL } from "../../composables/getApiURL";
+import { handleAuth } from "../../composables/handleAuth";
 
 type FormData = {
   login: string;
@@ -42,40 +43,17 @@ export default function Home({ navigation }: any) {
     },
   });
 
-  const handleRegister = async (data: FormData) => {
-    try {
-      const apiUrl = getApiURL();
-      const loginEndpoint = "register";
-
-      const response = await fetch(`${apiUrl}${loginEndpoint}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          login: data.login,
-          password: data.password,
-        }),
-      });
-
-      const responseData = await response.json();
-
-      if (response.ok) {
-        useAccessTokenStore.setState({
-          accessToken: responseData.access_token,
-        });
-
-        navigation.navigate("MainMenu");
-      } else {
-        Alert.alert("Błąd", "Błąd rejestracji");
-      }
-    } catch (error) {
-      Alert.alert("Błąd", "Błąd rejestracji");
-    }
-  };
-
   const onSubmit: SubmitHandler<FormData> = (data) => {
-    handleRegister(data);
+    handleAuth(
+      data,
+      "register",
+      () => {
+        navigation.navigate("MainMenu");
+      },
+      () => {
+        Alert.alert("Błąd", `Błąd rejestracji"}`);
+      }
+    );
   };
 
   return (
