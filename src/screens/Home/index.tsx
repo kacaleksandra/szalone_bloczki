@@ -1,12 +1,17 @@
-import React from "react";
-import { Image, View, Dimensions, Alert } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  Image,
+  View,
+  Dimensions,
+  Alert,
+  Keyboard,
+  StyleSheet,
+} from "react-native";
 import { Layout, Text, Button } from "@ui-kitten/components";
 import { object, string } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, SubmitHandler, Control } from "react-hook-form";
 import { FormComponent } from "./FormComponent";
-import { useAccessTokenStore } from "../../composables/store";
-import { getApiURL } from "../../composables/getApiURL";
 import { handleAuth } from "../../composables/handleAuth";
 
 type FormData = {
@@ -24,6 +29,8 @@ const schema = object().shape({
 
 // MAIN PAGE
 export default function Home({ navigation }: any) {
+  const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+
   const {
     control,
     handleSubmit,
@@ -36,6 +43,30 @@ export default function Home({ navigation }: any) {
     },
   });
 
+  const onKeyboardDidShow = () => {
+    setIsKeyboardOpen(true);
+  };
+
+  const onKeyboardDidHide = () => {
+    setIsKeyboardOpen(false);
+  };
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      onKeyboardDidShow
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      onKeyboardDidHide
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
+
   const onSubmit: SubmitHandler<FormData> = (data) => {
     handleAuth(
       data,
@@ -44,7 +75,7 @@ export default function Home({ navigation }: any) {
         navigation.navigate("MainMenu");
       },
       () => {
-        Alert.alert("Błąd", `Błąd logowania"}`);
+        Alert.alert("Błąd", "Błąd logowania");
       }
     );
   };
@@ -54,10 +85,20 @@ export default function Home({ navigation }: any) {
       style={{ flex: 1, justifyContent: "space-between", alignItems: "center" }}
     >
       {/* <Button onPress={navigation.navigate("NewProject")}>DevTool</Button> */}
-      <View className="flex self-center h-1/3 py-16">
+      <View
+        className="flex self-center h-1/3 py-16"
+        style={{
+          ...(isKeyboardOpen && {
+            display: "none",
+          }),
+        }}
+      >
         <Image
           source={require("../../assets/full_app_logo.png")}
-          style={{ width: windowWidth, height: 200 }}
+          style={{
+            width: windowWidth,
+            height: 200,
+          }}
           resizeMode="contain"
         />
       </View>
