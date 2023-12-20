@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Alert } from "react-native";
 import { Text, Input, Button, Layout } from "@ui-kitten/components";
 
 export default function NewProject({ navigation }: any) {
@@ -7,8 +7,12 @@ export default function NewProject({ navigation }: any) {
   const [projectDescription, setProjectDescription] = useState("");
 
   const handleNext = () => {
-    console.log(projectName, projectDescription);
-    navigation.navigate("EditProject");
+    if (projectName.trim() === "" || projectDescription.trim() === "") {
+      Alert.alert("Błąd", "Wypełnij wszystkie pola");
+    } else {
+      console.log(projectName, projectDescription);
+      navigation.navigate("EditProject");
+    }
   };
 
   return (
