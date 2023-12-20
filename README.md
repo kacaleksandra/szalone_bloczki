@@ -46,9 +46,13 @@ Upewnij się, że masz zainstalowanego [Yarn](https://yarnpkg.com/) oraz [Expo C
 
 Następnie, przejdź do katalogu projektu w terminalu i zainstaluj zależności, wpisując następującą komendę:
 
-    yarn  install
+    yarn install
 
-Po zainstalowaniu zależności, uruchom projekt za pomocą komendy:
+Koniecznym krokiem jest też stworzenie pliku `.env` i zawarcie w nim linku do API:
+
+    BASE_URL=<link_do_api>
+
+Po zainstalowaniu zależności i utworzeniu pliku, uruchom projekt za pomocą komendy:
 
     yarn expo start
 
