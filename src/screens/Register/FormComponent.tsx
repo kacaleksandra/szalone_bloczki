@@ -3,6 +3,7 @@ import { View } from "react-native";
 import { Text, Input } from "@ui-kitten/components";
 import { Controller } from "react-hook-form";
 import { Control, FieldErrors } from "react-hook-form";
+import { error } from "console";
 
 type FormData = {
   login: string;
@@ -70,7 +71,7 @@ export const FormComponent: React.FC<FormComponentProps> = ({
     />
     {errors && errors.confirmPassword && (
       <Text style={{ color: "red", textAlign: "center", marginBottom: "2%" }}>
-        Potwierdzenie hasła jest wymagane
+        {errors.confirmPassword.message}
       </Text>
     )}
   </View>
