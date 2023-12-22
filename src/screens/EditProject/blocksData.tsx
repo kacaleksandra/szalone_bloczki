@@ -5,39 +5,85 @@ export const blocksData = [
   {
     id: 0,
     name: "print string",
-    getContent: () => (
-      <Text>
-        <Input placeholder="text" />
-      </Text>
+    getContent: (
+      itemKey: number,
+      inputValues: any[],
+      changeValue: (itemKey: number, inputKey: number, value: any) => void
+    ) => (
+      <>
+        <Input
+          placeholder="text"
+          value={inputValues[0]}
+          onChangeText={(value) => changeValue(itemKey, 0, value)}
+        />
+      </>
     ),
+    inputAmount: 1,
   },
   {
     id: 1,
     name: "print variable",
-    getContent: () => <Input placeholder="name" />,
+    getContent: (
+      itemKey: number,
+      inputValues: any[],
+      changeValue: (itemKey: number, inputKey: number, value: any) => void
+    ) => (
+      <Input
+        placeholder="name"
+        value={inputValues[0]}
+        onChangeText={(value) => changeValue(itemKey, 0, value)}
+      />
+    ),
+    inputAmount: 1,
   },
   {
     id: 2,
     name: "assign variable",
-    variableName: "variable name",
-    variableValue: "variable value",
-    getContent: () => (
-      <Text>
-        <Input placeholder="name" /> = <Input placeholder="value" />
-      </Text>
+    getContent: (
+      itemKey: number,
+      inputValues: any[],
+      changeValue: (itemKey: number, inputKey: number, value: any) => void
+    ) => (
+      <>
+        <Input
+          placeholder="name"
+          value={inputValues[0]}
+          onChangeText={(value) => changeValue(itemKey, 0, value)}
+        />
+        <Text> = </Text>
+        <Input
+          placeholder="value"
+          value={inputValues[1]}
+          onChangeText={(value) => changeValue(itemKey, 1, value)}
+        />
+      </>
     ),
+    inputAmount: 2,
   },
   {
     id: 3,
     name: "if",
-    variableName: "variable name",
-    variableValue: "variable value",
-    getContent: () => (
-      <Text>
-        If
-        <Input placeholder="name" /> bigger than <Input placeholder="value" />
-      </Text>
+    getContent: (
+      itemKey: number,
+      inputValues: any[],
+      changeValue: (itemKey: number, inputKey: number, value: any) => void
+    ) => (
+      <>
+        <Text>If</Text>
+        <Input
+          placeholder="name"
+          value={inputValues[0]}
+          onChangeText={(value) => changeValue(itemKey, 0, value)}
+        />
+        <Text>bigger than </Text>
+        <Input
+          placeholder="value"
+          value={inputValues[1]}
+          onChangeText={(value) => changeValue(itemKey, 1, value)}
+        />
+      </>
     ),
+    inputAmount: 2,
     hasInside: true,
     Inside: [],
   },

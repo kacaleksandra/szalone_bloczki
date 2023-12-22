@@ -5,6 +5,7 @@ import BlockPicker from "./blockPicker";
 import { Block } from "./blocksType";
 import { blocksOperations } from "./blocksOperations";
 import { Button, Divider } from "@ui-kitten/components";
+import { set } from "react-hook-form";
 
 // type Block = {
 //   id: number;
@@ -23,13 +24,15 @@ export default function EditProject() {
   const [blocksCounter, setBlocksCounter] = useState(0);
 
   const [blocks, setBlocks] = useState<Block[]>([]);
+  const [blocksValues, setBlocksValues] = useState<any>([]);
 
   const addBlock = (block: number) => {
-    const newBlock: Block = {
+    const newBlock: any = {
       ...blocksData[block],
       key: blocksCounter,
       inside: [],
     };
+    initializeBlockValues(blocksData[block].inputAmount);
     blocksOperations.addBlockToEnd(blocks, newBlock);
     setBlocksCounter(blocksCounter + 1);
     setBlocks([...blocks]);
@@ -41,13 +44,35 @@ export default function EditProject() {
     setBlocks([...blocks]);
   };
 
+  const initializeBlockValues = (inputAmount: number) => {
+    blocksValues.push(new Array(inputAmount));
+    setBlocksValues([...blocksValues]);
+  };
+
+  const updateBlockValue = (
+    objectKey: number,
+    inputKey: number,
+    value: string
+  ) => {
+    blocksValues[objectKey][inputKey] = value;
+    setBlocksValues([...blocksValues]);
+  };
+
+  const moveLeft = (objectKey: number) => {
+    const movedObject = blocksOperations.moveObjectLeft(blocks, objectKey);
+    setBlocks([...blocks]);
+  };
+  const moveRight = (objectKey: number) => {
+    const movedObject = blocksOperations.moveObjectRight(blocks, objectKey);
+    setBlocks([...blocks]);
+  };
   const moveUp = (objectKey: number) => {
     const movedObject = blocksOperations.moveObjectUp(blocks, objectKey);
-    if (movedObject) {
-      setBlocks([...blocks]);
-    } else {
-      console.log("Object not found");
-    }
+    setBlocks([...blocks]);
+  };
+  const moveDown = (objectKey: number) => {
+    const movedObject = blocksOperations.moveObjectDown(blocks, objectKey);
+    setBlocks([...blocks]);
   };
 
   const renderList = (_blocks: Block[], mainList: Boolean = false) => {
@@ -58,16 +83,45 @@ export default function EditProject() {
           <>
             <View>
               <Text>{item.name}</Text>
-              <Text>
-                {item.getContent()}
+              <View>
+                {item.getContent(
+                  item.key,
+                  blocksValues[item.key],
+                  (objectKey, inputKey, inputValue) =>
+                    updateBlockValue(objectKey, inputKey, inputValue)
+                )}
                 <View>
-                  {/* // buttons */}
+                  {/* buttons */}
                   {index === _blocks.length - 1 &&
                     !mainList && ( //if it's the last element of the list, and the list is not the main one
-                      <Button onPress={() => moveUp(item.key)}>
-                        left arrow
-                      </Button>
+                      <Button onPress={() => moveLeft(item.key)}>left</Button>
                     )}
+
+                  {/* if previous item has inside*/}
+                  {index !== 0 && _blocks[index - 1].hasInside && (
+                    <Button onPress={() => moveRight(item.key)}>right</Button>
+                  )}
+                  {/* if isn't the first item*/}
+                  {index !== 0 && (
+                    <Button
+                      onPress={() => {
+                        moveUp(item.key);
+                      }}
+                    >
+                      Up
+                    </Button>
+                  )}
+                  {/* if isn't the last item, move down*/}
+                  {index !== _blocks.length - 1 && (
+                    <Button
+                      onPress={() => {
+                        moveDown(item.key);
+                      }}
+                    >
+                      Down
+                    </Button>
+                  )}
+                  {/* delete item*/}
                   <Button
                     onPress={() => {
                       deleteBlock(item.key);
@@ -76,7 +130,7 @@ export default function EditProject() {
                     Delete item
                   </Button>
                 </View>
-              </Text>
+              </View>
             </View>
             <Divider />
             <View
@@ -123,6 +177,7 @@ export default function EditProject() {
       }}
     >
       <Text>New project </Text>
+      <Button onPress={() => console.log(blocksValues)}>koniec</Button>
       <Button onPress={() => setIsListVisible(true)}>Add new step</Button>
       {isListVisible && displayBlockPicker()}
       {renderList(blocks, true)}
@@ -132,18 +187,9 @@ export default function EditProject() {
 
 {
   /* 
-  Before this view:
-  - Project name input
-  - Project description input
-  - create project button
-  Then:
+
   Step list with start and end step
   A button to add a new step
   Then a list shows up with all options
-  At the beginning there are only 2 options:
-  - print
-  - assign variable
-  After selecting one of them, the user is redirected to the screen with the form
-  On the assign variable you can select the variable name and the value
 */
 }
