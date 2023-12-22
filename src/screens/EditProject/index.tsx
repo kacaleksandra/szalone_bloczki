@@ -20,7 +20,6 @@ import { set } from "react-hook-form";
 
 export default function EditProject() {
   const [isListVisible, setIsListVisible] = useState(false);
-  const [selectedFruit, setSelectedFruit] = useState("apple");
   const [blocksCounter, setBlocksCounter] = useState(0);
 
   const [blocks, setBlocks] = useState<Block[]>([]);
@@ -73,6 +72,22 @@ export default function EditProject() {
   const moveDown = (objectKey: number) => {
     const movedObject = blocksOperations.moveObjectDown(blocks, objectKey);
     setBlocks([...blocks]);
+  };
+
+  const mergeBlocksAndValues = (
+    _blocks: Block[],
+    mainList: Boolean = false
+  ) => {
+    _blocks.forEach((block) => {
+      block.valuesArray = blocksValues[block.key];
+      if (block.hasInside) {
+        mergeBlocksAndValues(block.inside);
+      }
+    });
+    if (mainList) {
+      //here is ready to be sent to backend
+      console.log(_blocks);
+    }
   };
 
   const renderList = (_blocks: Block[], mainList: Boolean = false) => {
@@ -177,7 +192,7 @@ export default function EditProject() {
       }}
     >
       <Text>New project </Text>
-      <Button onPress={() => console.log(blocksValues)}>koniec</Button>
+      <Button onPress={() => mergeBlocksAndValues(blocks, true)}>koniec</Button>
       <Button onPress={() => setIsListVisible(true)}>Add new step</Button>
       {isListVisible && displayBlockPicker()}
       {renderList(blocks, true)}

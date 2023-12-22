@@ -85,7 +85,7 @@ export const blocksData = [
     ),
     inputAmount: 2,
     hasInside: true,
-    Inside: [],
+    inside: [],
   },
   // More blocks...
 ];

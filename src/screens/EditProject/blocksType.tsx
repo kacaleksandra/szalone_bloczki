@@ -10,4 +10,5 @@ export type Block = {
   inside: Block[];
   key: number;
   inputAmount?: number;
+  valuesArray?: any[];
 };
