@@ -1,11 +1,10 @@
-import { View, Text, FlatList } from "react-native";
+import { View, Text, FlatList, StyleSheet } from "react-native";
 import { useState } from "react";
 import { blocksData } from "./blocksData";
 import BlockPicker from "./blockPicker";
 import { Block } from "./blocksType";
 import { blocksOperations } from "./blocksOperations";
-import { Button, Divider } from "@ui-kitten/components";
-import { set } from "react-hook-form";
+import { Button, Divider, Icon, IconElement } from "@ui-kitten/components";
 
 // type Block = {
 //   id: number;
@@ -17,6 +16,14 @@ import { set } from "react-hook-form";
 //   inside: Block[];
 //   key: number;
 // };
+
+const AddIcon = (props: any): IconElement => (
+  <Icon
+    {...props}
+    style={[props.style, { width: 60, height: 60 }]}
+    name="plus-circle-outline"
+  />
+);
 
 export default function EditProject() {
   const [isListVisible, setIsListVisible] = useState(false);
@@ -186,19 +193,44 @@ export default function EditProject() {
   };
 
   return (
-    <View
-      style={{
-        padding: 20,
-      }}
-    >
-      <Text>New project </Text>
-      <Button onPress={() => mergeBlocksAndValues(blocks, true)}>koniec</Button>
-      <Button onPress={() => setIsListVisible(true)}>Add new step</Button>
-      {isListVisible && displayBlockPicker()}
-      {renderList(blocks, true)}
-    </View>
+    <>
+      <View className="flex flex-grow justify-between">
+        <View>
+          <Text className="font-bold text-lg">1. Start </Text>
+        </View>
+
+        <View>
+          {isListVisible && displayBlockPicker()}
+          {renderList(blocks, true)}
+        </View>
+        <View>
+          <Button
+            onPress={() => mergeBlocksAndValues(blocks, true)}
+            size="giant"
+          >
+            Gotowe!
+          </Button>
+        </View>
+      </View>
+      <View style={styles.button}>
+        <Button
+          onPress={() => setIsListVisible(true)}
+          appearance="ghost"
+          accessoryLeft={AddIcon}
+        ></Button>
+      </View>
+    </>
   );
 }
+
+const styles = StyleSheet.create({
+  button: {
+    //set absolute position
+    position: "absolute",
+    bottom: 60,
+    right: 5,
+  },
+});
 
 {
   /* 
