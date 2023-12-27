@@ -25,6 +25,46 @@ const AddIcon = (props: any): IconElement => (
   />
 );
 
+const DeleteIcon = (props: any): IconElement => (
+  <Icon
+    {...props}
+    style={[props.style, { width: 20, height: 20 }]}
+    name="trash-outline"
+  />
+);
+
+const UpIcon = (props: any): IconElement => (
+  <Icon
+    {...props}
+    style={[props.style, { width: 20, height: 20 }]}
+    name="arrow-upward-outline"
+  />
+);
+
+const DownIcon = (props: any): IconElement => (
+  <Icon
+    {...props}
+    style={[props.style, { width: 20, height: 20 }]}
+    name="arrow-downward-outline"
+  />
+);
+
+const RightIcon = (props: any): IconElement => (
+  <Icon
+    {...props}
+    style={[props.style, { width: 20, height: 20 }]}
+    name="corner-down-right-outline"
+  />
+);
+
+const LeftIcon = (props: any): IconElement => (
+  <Icon
+    {...props}
+    style={[props.style, { width: 20, height: 20 }]}
+    name="corner-down-left-outline"
+  />
+);
+
 export default function EditProject() {
   const [isListVisible, setIsListVisible] = useState(false);
   const [blocksCounter, setBlocksCounter] = useState(0);
@@ -103,57 +143,73 @@ export default function EditProject() {
         data={_blocks}
         renderItem={({ item, index }) => (
           <>
-            <View>
-              <Text>{item.name}</Text>
-              <View>
-                {item.getContent(
-                  item.key,
-                  blocksValues[item.key],
-                  (objectKey, inputKey, inputValue) =>
-                    updateBlockValue(objectKey, inputKey, inputValue)
-                )}
-                <View>
-                  {/* buttons */}
-                  {index === _blocks.length - 1 &&
-                    !mainList && ( //if it's the last element of the list, and the list is not the main one
-                      <Button onPress={() => moveLeft(item.key)}>left</Button>
+            <View className="w-full flex-row py-4 justify-between">
+              <View className="justify-center mx-2 w-16">
+                <Text className="text-lg">{item.name}</Text>
+              </View>
+              <View className="flex flex-row items-center w-11/12">
+                <View className="flex w-1/2 ">
+                  {item.getContent(
+                    item.key,
+                    blocksValues[item.key],
+                    (objectKey, inputKey, inputValue) =>
+                      updateBlockValue(objectKey, inputKey, inputValue)
+                  )}
+                </View>
+                {/* buttons */}
+                <View className="flex flex-row">
+                  <View>
+                    {/* if isn't the first item*/}
+                    {index !== 0 && (
+                      <Button
+                        onPress={() => moveUp(item.key)}
+                        appearance="ghost"
+                        size="tiny"
+                        accessoryLeft={UpIcon}
+                      ></Button>
                     )}
+                    {/* if isn't the last item, move down*/}
+                    {index !== _blocks.length - 1 && (
+                      <Button
+                        onPress={() => moveDown(item.key)}
+                        appearance="ghost"
+                        size="tiny"
+                        accessoryLeft={DownIcon}
+                      ></Button>
+                    )}
+                  </View>
+                  <View>
+                    {index === _blocks.length - 1 &&
+                      !mainList && ( //if it's the last element of the list, and the list is not the main one
+                        <Button
+                          onPress={() => moveLeft(item.key)}
+                          appearance="ghost"
+                          size="tiny"
+                          accessoryLeft={LeftIcon}
+                        ></Button>
+                      )}
 
-                  {/* if previous item has inside*/}
-                  {index !== 0 && _blocks[index - 1].hasInside && (
-                    <Button onPress={() => moveRight(item.key)}>right</Button>
-                  )}
-                  {/* if isn't the first item*/}
-                  {index !== 0 && (
+                    {/* if previous item has inside*/}
+                    {index !== 0 && _blocks[index - 1].hasInside && (
+                      <Button
+                        onPress={() => moveRight(item.key)}
+                        appearance="ghost"
+                        size="tiny"
+                        accessoryLeft={RightIcon}
+                      ></Button>
+                    )}
+                    {/* delete item*/}
                     <Button
-                      onPress={() => {
-                        moveUp(item.key);
-                      }}
-                    >
-                      Up
-                    </Button>
-                  )}
-                  {/* if isn't the last item, move down*/}
-                  {index !== _blocks.length - 1 && (
-                    <Button
-                      onPress={() => {
-                        moveDown(item.key);
-                      }}
-                    >
-                      Down
-                    </Button>
-                  )}
-                  {/* delete item*/}
-                  <Button
-                    onPress={() => {
-                      deleteBlock(item.key);
-                    }}
-                  >
-                    Delete item
-                  </Button>
+                      onPress={() => deleteBlock(item.key)}
+                      appearance="ghost"
+                      size="small"
+                      accessoryLeft={DeleteIcon}
+                    ></Button>
+                  </View>
                 </View>
               </View>
             </View>
+
             <Divider />
             <View
               style={{
@@ -185,11 +241,7 @@ export default function EditProject() {
   return (
     <>
       <View className="flex flex-grow justify-between bg-white">
-        <View>
-          <Text className="font-bold text-lg">1. Start </Text>
-        </View>
-
-        {renderList(blocks, true)}
+        <View className="h-5/6">{renderList(blocks, true)}</View>
         <View className="absolute w-full top-3/4 ">
           {isListVisible && displayBlockPicker()}
         </View>
@@ -217,7 +269,7 @@ const styles = StyleSheet.create({
   button: {
     //set absolute position
     position: "absolute",
-    bottom: 60,
+    bottom: 50,
     right: 5,
   },
 });

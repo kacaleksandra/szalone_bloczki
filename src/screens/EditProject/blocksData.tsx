@@ -13,6 +13,7 @@ export const blocksData = [
       <>
         <Input
           placeholder="text"
+          style={{ width: "100%" }}
           value={inputValues[0]}
           onChangeText={(value) => changeValue(itemKey, 0, value)}
         />
