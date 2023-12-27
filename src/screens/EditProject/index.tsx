@@ -173,20 +173,10 @@ export default function EditProject() {
 
   const displayBlockPicker = () => {
     return (
-      <View
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          bottom: 0,
-          right: 0,
-          zIndex: 2,
-          backgroundColor: "white",
-        }}
-      >
+      <View>
         <BlockPicker
-          cancelPicking={() => setIsListVisible(false)}
           pickBlock={(id) => addBlock(id)}
+          cancelPicking={() => setIsListVisible(false)}
         />
       </View>
     );
@@ -194,21 +184,21 @@ export default function EditProject() {
 
   return (
     <>
-      <View className="flex flex-grow justify-between">
+      <View className="flex flex-grow justify-between bg-white">
         <View>
           <Text className="font-bold text-lg">1. Start </Text>
         </View>
 
-        <View>
+        {renderList(blocks, true)}
+        <View className="absolute w-full top-3/4 ">
           {isListVisible && displayBlockPicker()}
-          {renderList(blocks, true)}
         </View>
         <View>
           <Button
             onPress={() => mergeBlocksAndValues(blocks, true)}
             size="giant"
           >
-            Gotowe!
+            Completed!
           </Button>
         </View>
       </View>
