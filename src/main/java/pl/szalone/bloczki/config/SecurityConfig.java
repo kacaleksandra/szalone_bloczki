@@ -4,13 +4,13 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import io.javalin.Javalin;
 import io.javalin.http.HttpStatus;
 import pl.szalone.bloczki.exception.RestException;
 import pl.szalone.bloczki.util.Initializable;
 
-//todo finish login/passwd auth
 public class SecurityConfig implements Initializable {
 
   @Override
@@ -29,7 +29,9 @@ public class SecurityConfig implements Initializable {
         DecodedJWT jwt = verifier.verify(token.substring(7));
         handler.attribute("session:id", jwt.getIssuer());
         handler.attribute("session:jwtToken", jwt.getToken());
-      } catch(JWTVerificationException ignored) {
+      } catch(TokenExpiredException ex) {
+        throw new RestException(HttpStatus.UNAUTHORIZED, "Expired validation.");
+      } catch (JWTVerificationException ignored) {
       }
     });
   }

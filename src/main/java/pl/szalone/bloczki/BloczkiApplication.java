@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.szalone.bloczki.config.SecurityConfig;
 import pl.szalone.bloczki.controller.AppController;
+import pl.szalone.bloczki.controller.LoginController;
 import pl.szalone.bloczki.domain.AppEntity;
 import pl.szalone.bloczki.exception.ExceptionHandler;
 import pl.szalone.bloczki.exception.RestException;
@@ -20,6 +21,8 @@ import pl.szalone.bloczki.repository.AppRepository;
 import pl.szalone.bloczki.repository.user.UserRepository;
 import pl.szalone.bloczki.repository.user.UserRepositoryImpl;
 import pl.szalone.bloczki.service.AppService;
+import pl.szalone.bloczki.service.login.LoginServiceImpl;
+import pl.szalone.bloczki.service.schematic.SchematicServiceImpl;
 import pl.szalone.bloczki.util.AppComponentLocator;
 import pl.szalone.bloczki.util.RequestValidator;
 
@@ -106,13 +109,14 @@ public class BloczkiApplication {
   }
 
   private void doRegisterServices(Javalin app) {
-    //todo add proper services
+    services.add(new LoginServiceImpl());
+    services.add(new SchematicServiceImpl());
     servicesLocator.fillComponents(services);
     services.forEach(service -> service.doRegisterService(app, repositoriesLocator));
   }
 
   private void doRegisterControllers(Javalin app) {
-    //todo add proper controllers
+    controllers.add(new LoginController());
     RequestValidator validator = new RequestValidator(repositoriesLocator.findComponent(UserRepository.class));
 
     controllers.forEach(controller -> controller.doRegisterController(app, servicesLocator, validator));

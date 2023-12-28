@@ -60,6 +60,8 @@ tasks.register('uberJar', Jar) {
 
     from sourceSets.main.output
 
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
     dependsOn configurations.runtimeClasspath
     from {
         configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) }

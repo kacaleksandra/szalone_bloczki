@@ -14,6 +14,14 @@ public class UserRepositoryImpl extends GenericAppRepository<User> implements Us
   }
 
   @Override
+  public Optional<User> findByLogin(String login) {
+    return DB.find(User.class)
+        .where()
+        .eq("login", login)
+        .findOneOrEmpty();
+  }
+
+  @Override
   public Optional<User> findByCredentials(String login, String password) {
     Optional<User> user = DB.find(User.class)
         .where()

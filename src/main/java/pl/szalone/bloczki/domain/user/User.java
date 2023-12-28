@@ -14,6 +14,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -31,6 +32,7 @@ public class User extends AppEntity<UserRepository> implements Messageable<Fetch
   private String username;
   private String login;
   private String password;
+  private String refreshToken;
 
   @Override
   public User save(UserRepository repository) {
