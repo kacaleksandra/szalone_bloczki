@@ -1,5 +1,5 @@
-import { View, Text, FlatList, StyleSheet } from "react-native";
-import { useState } from "react";
+import { View, Text, FlatList, StyleSheet, Keyboard } from "react-native";
+import { useEffect, useState } from "react";
 import { blocksData } from "./blocksData";
 import BlockPicker from "./blockPicker";
 import { Block } from "./blocksType";
@@ -71,6 +71,32 @@ export default function EditProject() {
 
   const [blocks, setBlocks] = useState<Block[]>([]);
   const [blocksValues, setBlocksValues] = useState<any>([]);
+
+  const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+
+  const onKeyboardDidShow = () => {
+    setIsKeyboardOpen(true);
+  };
+
+  const onKeyboardDidHide = () => {
+    setIsKeyboardOpen(false);
+  };
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      onKeyboardDidShow
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      onKeyboardDidHide
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
 
   const addBlock = (block: number) => {
     const newBlock: any = {
@@ -241,8 +267,17 @@ export default function EditProject() {
   return (
     <>
       <View className="flex flex-grow justify-between bg-white">
-        <View className="h-5/6">{renderList(blocks, true)}</View>
-        <View className="absolute w-full top-3/4 ">
+        <View
+          className="h-5/6"
+          style={{
+            ...(isKeyboardOpen && {
+              height: "50%",
+            }),
+          }}
+        >
+          {renderList(blocks, true)}
+        </View>
+        <View className="absolute w-full top-3/4">
           {isListVisible && displayBlockPicker()}
         </View>
         <View>
