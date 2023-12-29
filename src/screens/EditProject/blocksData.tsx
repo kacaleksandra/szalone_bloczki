@@ -1,4 +1,4 @@
-import { Text } from "react-native";
+import { Text, View } from "react-native";
 import { Input } from "@ui-kitten/components";
 
 export const blocksData = [
@@ -51,7 +51,9 @@ export const blocksData = [
           value={inputValues[0]}
           onChangeText={(value) => changeValue(itemKey, 0, value)}
         />
-        <Text> = </Text>
+        <View className="flex items-center">
+          <Text> = </Text>
+        </View>
         <Input
           placeholder="value"
           value={inputValues[1]}
@@ -70,13 +72,17 @@ export const blocksData = [
       changeValue: (itemKey: number, inputKey: number, value: any) => void
     ) => (
       <>
-        <Text>If</Text>
+        <View className=" my-1">
+          <Text> If </Text>
+        </View>
         <Input
           placeholder="name"
           value={inputValues[0]}
           onChangeText={(value) => changeValue(itemKey, 0, value)}
         />
-        <Text>bigger than </Text>
+        <View className="my-1">
+          <Text>bigger than </Text>
+        </View>
         <Input
           placeholder="value"
           value={inputValues[1]}
