@@ -65,7 +65,7 @@ const LeftIcon = (props: any): IconElement => (
   />
 );
 
-export default function EditProject() {
+export default function EditProject({ navigation }: any) {
   const [isListVisible, setIsListVisible] = useState(false);
   const [blocksCounter, setBlocksCounter] = useState(0);
 
@@ -161,6 +161,11 @@ export default function EditProject() {
       //here is ready to be sent to backend
       console.log(_blocks);
     }
+  };
+
+  const complete = () => {
+    mergeBlocksAndValues(blocks, true);
+    navigation.navigate("ProjectOptions");
   };
 
   const renderList = (_blocks: Block[], mainList: Boolean = false) => {
@@ -281,10 +286,7 @@ export default function EditProject() {
           {isListVisible && displayBlockPicker()}
         </View>
         <View>
-          <Button
-            onPress={() => mergeBlocksAndValues(blocks, true)}
-            size="giant"
-          >
+          <Button onPress={() => complete()} size="giant">
             Completed!
           </Button>
         </View>

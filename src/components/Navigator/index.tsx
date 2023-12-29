@@ -5,6 +5,7 @@ import MainMenu from "../../screens/MainMenu";
 import MyProjects from "../../screens/MyProjects";
 import EditProject from "../../screens/EditProject";
 import NewProject from "../../screens/NewProject";
+import ProjectOptions from "../../screens/ProjectOptions";
 
 const Stack = createNativeStackNavigator();
 
@@ -40,6 +41,11 @@ export default function Navigator() {
         name="EditProject"
         component={EditProject}
         options={{ title: "Edycja projektu" }}
+      />
+      <Stack.Screen
+        name="ProjectOptions"
+        component={ProjectOptions}
+        options={{ title: "Opcje projektu" }}
       />
     </Stack.Navigator>
   );
