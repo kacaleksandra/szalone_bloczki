@@ -176,7 +176,7 @@ export default function EditProject({ navigation }: any) {
           <>
             <View className="w-full flex-row py-4 justify-between">
               <View className="justify-center mx-2 w-16">
-                <Text className="text-lg">{item.name}</Text>
+                <Text className="text-m">{item.name}</Text>
               </View>
               <View className="flex flex-row items-center w-11/12">
                 <View className="flex w-1/2 ">
@@ -287,7 +287,7 @@ export default function EditProject({ navigation }: any) {
         </View>
         <View>
           <Button onPress={() => complete()} size="giant">
-            Completed!
+            Przejdź dalej!
           </Button>
         </View>
       </View>

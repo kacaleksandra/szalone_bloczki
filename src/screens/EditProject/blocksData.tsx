@@ -4,7 +4,7 @@ import { Input } from "@ui-kitten/components";
 export const blocksData = [
   {
     id: 0,
-    name: "print string",
+    name: "wypisz tekst",
     getContent: (
       itemKey: number,
       inputValues: any[],
@@ -12,7 +12,7 @@ export const blocksData = [
     ) => (
       <>
         <Input
-          placeholder="text"
+          placeholder="tekst"
           style={{ width: "100%" }}
           value={inputValues[0]}
           onChangeText={(value) => changeValue(itemKey, 0, value)}
@@ -23,14 +23,14 @@ export const blocksData = [
   },
   {
     id: 1,
-    name: "print variable",
+    name: "wypisz zmienną",
     getContent: (
       itemKey: number,
       inputValues: any[],
       changeValue: (itemKey: number, inputKey: number, value: any) => void
     ) => (
       <Input
-        placeholder="name"
+        placeholder="nazwa"
         value={inputValues[0]}
         onChangeText={(value) => changeValue(itemKey, 0, value)}
       />
@@ -39,7 +39,7 @@ export const blocksData = [
   },
   {
     id: 2,
-    name: "assign variable",
+    name: "przypisz zmienną",
     getContent: (
       itemKey: number,
       inputValues: any[],
@@ -47,7 +47,7 @@ export const blocksData = [
     ) => (
       <>
         <Input
-          placeholder="name"
+          placeholder="nazwa"
           value={inputValues[0]}
           onChangeText={(value) => changeValue(itemKey, 0, value)}
         />
@@ -55,7 +55,7 @@ export const blocksData = [
           <Text> = </Text>
         </View>
         <Input
-          placeholder="value"
+          placeholder="wartość"
           value={inputValues[1]}
           onChangeText={(value) => changeValue(itemKey, 1, value)}
         />
@@ -65,7 +65,7 @@ export const blocksData = [
   },
   {
     id: 3,
-    name: "if",
+    name: "jeżeli",
     getContent: (
       itemKey: number,
       inputValues: any[],
@@ -73,18 +73,18 @@ export const blocksData = [
     ) => (
       <>
         <View className=" my-1">
-          <Text> If </Text>
+          <Text> Jeżeli </Text>
         </View>
         <Input
-          placeholder="name"
+          placeholder="nazwa"
           value={inputValues[0]}
           onChangeText={(value) => changeValue(itemKey, 0, value)}
         />
         <View className="my-1">
-          <Text>bigger than </Text>
+          <Text>większy niż </Text>
         </View>
         <Input
-          placeholder="value"
+          placeholder="wartość"
           value={inputValues[1]}
           onChangeText={(value) => changeValue(itemKey, 1, value)}
         />
