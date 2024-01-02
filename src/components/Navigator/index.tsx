@@ -6,6 +6,7 @@ import MyProjects from "../../screens/MyProjects";
 import EditProject from "../../screens/EditProject";
 import NewProject from "../../screens/NewProject";
 import ProjectOptions from "../../screens/ProjectOptions";
+import Blocks from "../../screens/Blocks";
 
 const Stack = createNativeStackNavigator();
 
@@ -46,6 +47,11 @@ export default function Navigator() {
         name="ProjectOptions"
         component={ProjectOptions}
         options={{ title: "Opcje projektu" }}
+      />
+      <Stack.Screen
+        name="Blocks"
+        component={Blocks}
+        options={{ title: "Bloczki" }}
       />
     </Stack.Navigator>
   );

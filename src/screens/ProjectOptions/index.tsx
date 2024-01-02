@@ -9,7 +9,7 @@ export default function ProjectOptions({ navigation }: any) {
           style={styles.button}
           size="giant"
           appearance="filled"
-          onPress={() => navigation.navigate("NewProject")}
+          onPress={() => navigation.navigate("Blocks")}
         >
           Wyświetl schemat
         </Button>
