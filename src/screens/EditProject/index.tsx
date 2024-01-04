@@ -127,6 +127,7 @@ export default function EditProject({ navigation }: any) {
     value: string
   ) => {
     blocksValues[objectKey][inputKey] = value;
+    console.log(value);
     setBlocksValues([...blocksValues]);
   };
 
@@ -156,6 +157,14 @@ export default function EditProject({ navigation }: any) {
       if (block.hasInside) {
         mergeBlocksAndValues(block.inside);
       }
+      if (block.id === 3 || block.id === 4) {
+        //if it's if or while
+        if (block.valuesArray[1] == undefined) {
+          block.valuesArray[1] = 0;
+        }
+      }
+      // here can be added more checks for other blocks like
+      // if any value is undefined or empty send error
     });
     if (mainList) {
       //here is ready to be sent to backend

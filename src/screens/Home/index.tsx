@@ -77,7 +77,7 @@ export default function Home({ navigation }: any) {
     <Layout
       style={{ flex: 1, justifyContent: "space-between", alignItems: "center" }}
     >
-      <Button onPress={navigation.navigate("Blocks")}>DevTool</Button>
+      <Button onPress={navigation.navigate("EditProject")}>DevTool</Button>
       <View
         className="flex self-center h-1/3 py-16"
         style={{
