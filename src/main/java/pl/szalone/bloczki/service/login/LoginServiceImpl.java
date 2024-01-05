@@ -48,7 +48,8 @@ public class LoginServiceImpl implements LoginService {
         .sign(Algorithm.HMAC512(System.getenv("JWT_SECRET")));
     Map<String, Object> data = new HashMap<>();
     data.put("access_token", token);
-    data.put("refresh_token", user.getRefreshToken());
+    //data.put("refresh_token", user.getRefreshToken());
+    data.put("refresh_token", refreshToken);
     data.put("user", user.toFetchDto());
     return data;
   }
@@ -84,7 +85,8 @@ public class LoginServiceImpl implements LoginService {
         .save(userRepository);
     Map<String, Object> data = new HashMap<>();
     data.put("access_token", token);
-    data.put("refresh_token", user.getRefreshToken());
+    //data.put("refresh_token", user.getRefreshToken());
+    data.put("refresh_token", refreshToken);
     data.put("user", user.toFetchDto());
     return data;
   }
