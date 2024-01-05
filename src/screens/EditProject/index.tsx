@@ -111,7 +111,6 @@ export default function EditProject({ navigation }: any) {
     setIsListVisible(false);
   };
   const deleteBlock = (objectKey: number) => {
-    console.log("deleting object with key: " + objectKey);
     blocksOperations.deleteObject(blocks, objectKey);
     setBlocks([...blocks]);
   };
@@ -127,7 +126,6 @@ export default function EditProject({ navigation }: any) {
     value: string
   ) => {
     blocksValues[objectKey][inputKey] = value;
-    console.log(value);
     setBlocksValues([...blocksValues]);
   };
 
@@ -168,7 +166,9 @@ export default function EditProject({ navigation }: any) {
     });
     if (mainList) {
       //here is ready to be sent to backend
-      console.log(_blocks);
+      //turn _blocks to json and send
+      console.log(JSON.stringify(_blocks, null, 2));
+      // console.log(_blocks);
     }
   };
 

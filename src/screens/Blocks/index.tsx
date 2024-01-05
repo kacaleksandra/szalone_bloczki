@@ -4,6 +4,7 @@ import { ScrollView, View, StyleSheet } from "react-native";
 import ViewShot from "react-native-view-shot";
 import { WebView } from "react-native-webview";
 import axios from "axios";
+import { set } from "react-hook-form";
 
 //Block diagram view
 export default function Blocks() {
@@ -95,14 +96,71 @@ export default function Blocks() {
   //     </View>
   //   );
   // });
+  const webViewRef = useRef(null);
 
+  const blocksObject = {
+    key1: "value1",
+    key2: "value2",
+    // ... other properties
+  };
+
+  const sendObjectToWebView = () => {
+    const jsonString = `[
+      {"id": 2,
+        "name": "przypisz zmienną",
+        "inputAmount": 2,
+        "key": 0,
+        "inside": [],
+        "valuesArray": [
+          "i",
+          "0"
+        ]
+      },
+      {
+        "id": 3,
+        "name": "jeżelitest",
+        "inputAmount": 3,
+        "hasInside": true,
+        "inside": [
+          {
+            "id": 1,
+            "name": "wypisz zmienną",
+            "inputAmount": 1,
+            "key": 2,
+            "inside": [],
+            "valuesArray": [
+              "Nie"
+            ]
+          }
+        ],
+        "key": 1,
+        "valuesArray": [
+          "i",
+          0,
+          "1"
+        ]
+      }
+    ]`;
+    //const escapedJsonString = JSON.stringify(jsonString);
+    const jsCode = jsonString;
+    //const jsCode = `window.postMessage(${jsonString}, '*'); true;`;
+    console.log("sending object to webview");
+    setTimeout(() => {
+      webViewRef.current.postMessage(jsCode);
+    }, 2000);
+    //webViewRef.current.postMessage(jsCode);
+  };
   return (
     <>
       <WebView
+        ref={webViewRef}
         source={{
-          uri: "https://deniorrr.github.io/MetaHeuristicAlgorithmsTesterFrontend",
+          //uri: "192.168.5.9:3000",
+          uri: "https://deniorrr.github.io/bloczki-diagram/",
         }}
+        onLoadEnd={sendObjectToWebView}
       />
+      <Button title="Send to WebView" onPress={sendObjectToWebView} />
       {/* <ScrollView
         maximumZoomScale={2}
         minimumZoomScale={0.5}
