@@ -66,9 +66,9 @@ public class SchematicServiceImpl implements SchematicService {
   }
 
   @Override
-  public byte[] doConvertImageToPdf(byte[] imageBytes) {
+  public byte[] doConvertImageToPdf(byte[] image) {
     return new byte[0];
-    /*try {
+    try {
       PDDocument doc = new PDDocument();
       PDPage page = new PDPage();
       doc.addPage(page);
@@ -97,7 +97,7 @@ public class SchematicServiceImpl implements SchematicService {
     } catch (IOException e) {
       e.printStackTrace();
       return null;
-    }*/
+    }
   }
 
   private static byte[] bufferedImageToByteArray(BufferedImage image) throws IOException {
