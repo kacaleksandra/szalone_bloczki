@@ -174,7 +174,9 @@ export default function EditProject({ navigation }: any) {
 
   const complete = () => {
     mergeBlocksAndValues(blocks, true);
-    navigation.navigate("ProjectOptions");
+    navigation.navigate("ProjectOptions", {
+      blocks: JSON.stringify(blocks, null, 2),
+    });
   };
 
   const renderList = (_blocks: Block[], mainList: Boolean = false) => {

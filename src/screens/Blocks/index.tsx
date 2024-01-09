@@ -5,6 +5,8 @@ import ViewShot from "react-native-view-shot";
 import { WebView } from "react-native-webview";
 import axios from "axios";
 import { set } from "react-hook-form";
+import { useRoute } from "@react-navigation/native";
+import { json } from "stream/consumers";
 
 //Block diagram view
 export default function Blocks() {
@@ -12,7 +14,7 @@ export default function Blocks() {
   const WIDTH = 5;
   const SIZE = 130;
   const BORDERWIDTH = 1;
-
+  const route = useRoute();
   // const [tableContent, setTableContent] = useState(
   //   Array.from({ length: HEIGHT }, (v) =>
   //     Array.from({ length: WIDTH }, (v) => 0)
@@ -105,42 +107,43 @@ export default function Blocks() {
   };
 
   const sendObjectToWebView = () => {
-    const jsonString = `[
-      {"id": 2,
-        "name": "przypisz zmienną",
-        "inputAmount": 2,
-        "key": 0,
-        "inside": [],
-        "valuesArray": [
-          "i",
-          "0"
-        ]
-      },
-      {
-        "id": 3,
-        "name": "jeżelitest",
-        "inputAmount": 3,
-        "hasInside": true,
-        "inside": [
-          {
-            "id": 1,
-            "name": "wypisz zmienną",
-            "inputAmount": 1,
-            "key": 2,
-            "inside": [],
-            "valuesArray": [
-              "Nie"
-            ]
-          }
-        ],
-        "key": 1,
-        "valuesArray": [
-          "i",
-          0,
-          "1"
-        ]
-      }
-    ]`;
+    // const jsonString = `[
+    //   {"id": 2,
+    //     "name": "przypisz zmienną",
+    //     "inputAmount": 2,
+    //     "key": 0,
+    //     "inside": [],
+    //     "valuesArray": [
+    //       "i",
+    //       "0"
+    //     ]
+    //   },
+    //   {
+    //     "id": 3,
+    //     "name": "jeżelitest",
+    //     "inputAmount": 3,
+    //     "hasInside": true,
+    //     "inside": [
+    //       {
+    //         "id": 1,
+    //         "name": "wypisz zmienną",
+    //         "inputAmount": 1,
+    //         "key": 2,
+    //         "inside": [],
+    //         "valuesArray": [
+    //           "Nie"
+    //         ]
+    //       }
+    //     ],
+    //     "key": 1,
+    //     "valuesArray": [
+    //       "i",
+    //       0,
+    //       "1"
+    //     ]
+    //   }
+    // ]`;
+    const jsonString = route.params.blocks;
     //const escapedJsonString = JSON.stringify(jsonString);
     const jsCode = jsonString;
     //const jsCode = `window.postMessage(${jsonString}, '*'); true;`;
