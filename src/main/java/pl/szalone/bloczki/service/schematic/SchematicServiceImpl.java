@@ -66,9 +66,13 @@ public class SchematicServiceImpl implements SchematicService {
   }
 
   @Override
-  public byte[] doConvertImageToPdf(byte[] image) {
+  public byte[] doConvertImageToPdf(byte[] imageData) {
     return new byte[0];
     try {
+      ByteArrayInputStream bis = new ByteArrayInputStream(imageData);
+      BufferedImage image = ImageIO.read(bis);
+      bis.close();
+
       PDDocument doc = new PDDocument();
       PDPage page = new PDPage();
       doc.addPage(page);
