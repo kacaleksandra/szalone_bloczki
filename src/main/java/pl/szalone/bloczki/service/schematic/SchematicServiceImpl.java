@@ -18,6 +18,7 @@ import pl.szalone.bloczki.util.AppComponentLocator;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
@@ -67,7 +68,6 @@ public class SchematicServiceImpl implements SchematicService {
 
   @Override
   public byte[] doConvertImageToPdf(byte[] imageData) {
-    return new byte[0];
     try {
       ByteArrayInputStream bis = new ByteArrayInputStream(imageData);
       BufferedImage image = ImageIO.read(bis);

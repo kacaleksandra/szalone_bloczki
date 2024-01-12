@@ -28,6 +28,8 @@ public class Schematic extends AppEntity<SchematicRepository> implements Message
 
   @ManyToOne
   private User user;
+  private String name;
+  private String description;
   @Column(columnDefinition = "TEXT")
   private String data;
 

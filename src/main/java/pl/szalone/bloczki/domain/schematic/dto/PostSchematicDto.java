@@ -5,6 +5,8 @@ import lombok.Getter;
 @Getter
 public class PostSchematicDto {
 
+  private String name;
+  private String description;
   private String data;
 
 }

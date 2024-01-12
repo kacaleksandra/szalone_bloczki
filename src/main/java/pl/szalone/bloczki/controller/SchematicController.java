@@ -21,7 +21,12 @@ public class SchematicController implements AppController {
       ctx.json(service.getSchematics(user));
     }).post("v1/schematics", ctx -> {
       User user = validator.doValidateCredentials(ctx);
-      PostSchematicDto dto = ctx.bodyValidator(PostSchematicDto.class).check(obj -> obj.getData() != null, "Data cannot be null").get();
+      PostSchematicDto dto = ctx
+        .bodyValidator(PostSchematicDto.class)
+        .check(obj -> obj.getData() != null, "Data cannot be null")
+        .check(obj -> obj.getName() != null, "Name cannot be null")
+        .check(obj -> obj.getDescription() != null, "Description cannot be null")
+        .get();
       ctx.json(service.postSchematic(user, dto));
     }).delete("v1/schematics/{id}", ctx -> {
       User user = validator.doValidateCredentials(ctx);

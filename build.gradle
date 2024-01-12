@@ -30,6 +30,8 @@ dependencies {
     //JSON Mapper
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
 
+    implementation 'com.google.code.gson:gson:2.10.1'
+
     //Database ORM - Ebean
     implementation 'io.ebean:ebean-mysql:13.25.1'
     //DDL generator for development purposes
