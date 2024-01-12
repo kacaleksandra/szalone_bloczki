@@ -49,7 +49,7 @@ export default function Home({ navigation }: any) {
         navigation.navigate("MainMenu");
       },
       () => {
-        Alert.alert("Błąd", `Błąd rejestracji"}`);
+        Alert.alert("Błąd", `Błąd rejestracji`);
       }
     );
   };
