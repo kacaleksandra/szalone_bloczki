@@ -4,6 +4,8 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 
 export default function ProjectOptions({ navigation }: any) {
   const route = useRoute();
+  const projectProperties = route.params?.projectProperties;
+
   return (
     <>
       <View className="w-full h-full flex justify-around pb-14 bg-white">
