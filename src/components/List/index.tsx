@@ -9,7 +9,10 @@ import {
 } from "@ui-kitten/components";
 
 export interface IListItem {
-  title: string;
+  id: number;
+  data: string;
+  name: string;
+  description: string;
 }
 
 interface ListDividersShowcaseProps {
@@ -35,7 +38,7 @@ export const ListDividersShowcase = ({
     index: number;
   }): React.ReactElement => (
     <ListItem
-      title={`${index + 1}. ${item.title}`}
+      title={`${index + 1}. ${item.name}`}
       accessoryRight={renderItemIcon}
       style={styles.items}
     />
