@@ -63,7 +63,7 @@ export default function Home({ navigation }: any) {
   const onSubmit: SubmitHandler<FormData> = (data) => {
     handleAuth(
       data,
-      "login",
+      "service/login",
       () => {
         navigation.navigate("MainMenu");
       },
