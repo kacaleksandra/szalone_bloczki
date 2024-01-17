@@ -10,6 +10,9 @@ export default function MainMenu({ navigation }: any) {
     });
     navigation.navigate("Home");
   };
+
+  const token = useAccessTokenStore((state) => state.accessToken);
+  console.log(token);
   return (
     <View className="w-full h-full flex justify-around pb-14 bg-white">
       <View className="w-full h-1/2 mt-10">

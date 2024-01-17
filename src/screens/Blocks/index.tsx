@@ -7,6 +7,7 @@ import axios from "axios";
 import { set } from "react-hook-form";
 import { useRoute } from "@react-navigation/native";
 import { json } from "stream/consumers";
+import { getApiURL } from "../../composables/getApiURL";
 
 //Block diagram view
 export default function Blocks() {
@@ -39,8 +40,10 @@ export default function Blocks() {
         type: "image/jpg", // Adjust the type as per your image format
       });
 
+      const apiURL = getApiURL();
+
       await axios
-        .post("http://192.168.5.10:3001/upload", formData, {
+        .post(`${apiUrl}convert`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -50,7 +53,6 @@ export default function Blocks() {
         });
     } catch (error) {
       console.error("Upload failed:", error);
-      // Handle error scenarios
     }
   };
 
@@ -65,17 +67,12 @@ export default function Blocks() {
     },
   });
 
-  // useEffect(() => {
-  //   setArrayValue(1, 1, "Start");
-  //   setArrayValue(1, 2, "print(x)");
-  //   setArrayValue(1, 3, "End");
-  // }, []);
-
   const viewShot = useRef<any>(null);
   const [uri, setUri] = useState<string>("");
 
   const captureScreen = () => {
     if (viewShot.current != null) {
+      console.log("taking screenshot");
       viewShot.current.capture().then((uri: string) => {
         setUri(uri);
         uploadImage(uri);
@@ -86,63 +83,14 @@ export default function Blocks() {
     }
   };
 
-  // const rows = Array.from({ length: HEIGHT }).map((_, rowIndex) => {
-  //   const columns = Array.from({ length: WIDTH }).map((_, colIndex) => (
-  //     <View key={`${rowIndex}-${colIndex}`} style={styles.square}>
-  //       <Text>{tableContent[rowIndex][colIndex]}</Text>
-  //     </View>
-  //   ));
-  //   return (
-  //     <View key={rowIndex} style={styles.row}>
-  //       {columns}
-  //     </View>
-  //   );
-  // });
   const webViewRef = useRef(null);
 
   const blocksObject = {
     key1: "value1",
     key2: "value2",
-    // ... other properties
   };
 
   const sendObjectToWebView = () => {
-    // const jsonString = `[
-    //   {"id": 2,
-    //     "name": "przypisz zmienną",
-    //     "inputAmount": 2,
-    //     "key": 0,
-    //     "inside": [],
-    //     "valuesArray": [
-    //       "i",
-    //       "0"
-    //     ]
-    //   },
-    //   {
-    //     "id": 3,
-    //     "name": "jeżelitest",
-    //     "inputAmount": 3,
-    //     "hasInside": true,
-    //     "inside": [
-    //       {
-    //         "id": 1,
-    //         "name": "wypisz zmienną",
-    //         "inputAmount": 1,
-    //         "key": 2,
-    //         "inside": [],
-    //         "valuesArray": [
-    //           "Nie"
-    //         ]
-    //       }
-    //     ],
-    //     "key": 1,
-    //     "valuesArray": [
-    //       "i",
-    //       0,
-    //       "1"
-    //     ]
-    //   }
-    // ]`;
     const jsonString = route.params.blocks;
     //const escapedJsonString = JSON.stringify(jsonString);
     const jsCode = jsonString;
@@ -155,6 +103,12 @@ export default function Blocks() {
   };
   return (
     <>
+      {/* <ScrollView
+        maximumZoomScale={2}
+        minimumZoomScale={0.5}
+        contentContainerStyle={styles.container}
+      >
+        <ViewShot ref={viewShot} options={{ format: "jpg", quality: 0.9 }}> */}
       <WebView
         ref={webViewRef}
         source={{
@@ -163,18 +117,13 @@ export default function Blocks() {
         }}
         onLoadEnd={sendObjectToWebView}
       />
-      <Button title="Send to WebView" onPress={sendObjectToWebView} />
-      {/* <ScrollView
-        maximumZoomScale={2}
-        minimumZoomScale={0.5}
-        contentContainerStyle={styles.container}
-      >
-        {/* <ViewShot
-          ref={viewShot}
-          options={{ format: "jpg", quality: 0.9 }}
-        ></ViewShot> */}
-      {/*         
-      </ScrollView>
+      {/* </ViewShot>
+      </ScrollView> */}
+      <Button onPress={captureScreen} size="large">
+        Wygeneruj PDF
+      </Button>
+
+      {/*}
       <View>
         <Button onPress={captureScreen}>Save as Image</Button>
       </View> */}
