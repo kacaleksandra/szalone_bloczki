@@ -9,6 +9,8 @@ import {
 } from "@ui-kitten/components";
 import { getApiURL } from "../../composables/getApiURL";
 import { getToken } from "../../composables/getToken";
+import { ProjectProperties } from "../../screens/NewProject/definitions";
+import { useNavigation } from "@react-navigation/native";
 
 export interface IListItem {
   id: number;
@@ -26,6 +28,7 @@ export const ListDividersShowcase = ({
   items,
   set: setProjects,
 }: ListDividersShowcaseProps): React.ReactElement => {
+  const navigation = useNavigation() as any;
   const token = getToken();
 
   const handleDeleteProject = async (itemId: number) => {
@@ -48,6 +51,10 @@ export const ListDividersShowcase = ({
     }
   };
 
+  function handleClick(item: ProjectProperties) {
+    navigation.navigate("ProjectOptions", item);
+  }
+
   const renderItemIcon = (props: any, itemId: number): IconElement => (
     <TouchableOpacity onPress={() => handleDeleteProject(itemId)}>
       <Icon
@@ -69,6 +76,7 @@ export const ListDividersShowcase = ({
       title={`${index + 1}. ${item.name}`}
       accessoryRight={(props) => renderItemIcon(props, item.id)}
       style={styles.items}
+      onPress={() => handleClick(item)}
     />
   );
 

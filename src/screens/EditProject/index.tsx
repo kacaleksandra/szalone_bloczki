@@ -5,6 +5,7 @@ import BlockPicker from "./blockPicker";
 import { Block } from "./blocksType";
 import { blocksOperations } from "./blocksOperations";
 import { Button, Divider, Icon, IconElement } from "@ui-kitten/components";
+import { useRoute } from "@react-navigation/native";
 
 // type Block = {
 //   id: number;
@@ -66,6 +67,9 @@ const LeftIcon = (props: any): IconElement => (
 );
 
 export default function EditProject({ navigation }: any) {
+  const route = useRoute();
+  const blocksParam = route.params?.blocks;
+
   const [isListVisible, setIsListVisible] = useState(false);
   const [blocksCounter, setBlocksCounter] = useState(0);
 
@@ -175,7 +179,9 @@ export default function EditProject({ navigation }: any) {
   const complete = () => {
     mergeBlocksAndValues(blocks, true);
     navigation.navigate("ProjectOptions", {
-      blocks: JSON.stringify(blocks, null, 2),
+      name: route.params?.name,
+      description: route.params?.description,
+      data: JSON.stringify(blocks, null, 2),
     });
   };
 
