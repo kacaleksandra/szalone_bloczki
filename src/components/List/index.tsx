@@ -1,5 +1,5 @@
-import React from "react";
-import { StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import {
   Divider,
   Icon,
@@ -7,6 +7,8 @@ import {
   List,
   ListItem,
 } from "@ui-kitten/components";
+import { getApiURL } from "../../composables/getApiURL";
+import { getToken } from "../../composables/getToken";
 
 export interface IListItem {
   id: number;
@@ -17,17 +19,43 @@ export interface IListItem {
 
 interface ListDividersShowcaseProps {
   items: IListItem[];
+  set: any;
 }
 
 export const ListDividersShowcase = ({
   items,
+  set: setProjects,
 }: ListDividersShowcaseProps): React.ReactElement => {
-  const renderItemIcon = (props: any): IconElement => (
-    <Icon
-      {...props}
-      style={[props.style, { width: 25, height: 25 }]}
-      name="trash-outline"
-    />
+  const token = getToken();
+
+  const handleDeleteProject = async (itemId: number) => {
+    try {
+      const apiUrl = getApiURL();
+      const response = await fetch(`${apiUrl}schematics/${itemId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error(
+          `Network request failed with status ${response.status}`
+        );
+      }
+      setProjects(items.filter((item) => item.id !== itemId));
+    } catch (error) {
+      console.error("Error deleting projects");
+    }
+  };
+
+  const renderItemIcon = (props: any, itemId: number): IconElement => (
+    <TouchableOpacity onPress={() => handleDeleteProject(itemId)}>
+      <Icon
+        {...props}
+        style={[props.style, { width: 25, height: 25 }]}
+        name="trash-outline"
+      />
+    </TouchableOpacity>
   );
 
   const renderItem = ({
@@ -39,7 +67,7 @@ export const ListDividersShowcase = ({
   }): React.ReactElement => (
     <ListItem
       title={`${index + 1}. ${item.name}`}
-      accessoryRight={renderItemIcon}
+      accessoryRight={(props) => renderItemIcon(props, item.id)}
       style={styles.items}
     />
   );

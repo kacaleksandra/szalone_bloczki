@@ -3,17 +3,18 @@ import { View } from "react-native";
 import { ListDividersShowcase, IListItem } from "../../components/List";
 import { getApiURL } from "../../composables/getApiURL";
 import useAccessTokenStore from "../../composables/store";
+import { getToken } from "../../composables/getToken";
 
 export default function MyProjects() {
   const [projects, setProjects] = useState<IListItem[]>([]);
-  const accessToken = useAccessTokenStore((state) => state.accessToken);
+  const token = getToken();
 
   const fetchProjects = async () => {
     try {
       const apiUrl = getApiURL();
       const response = await fetch(`${apiUrl}schematics`, {
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${token}`,
         },
       });
       if (!response.ok) {
@@ -35,7 +36,7 @@ export default function MyProjects() {
 
   return (
     <View>
-      <ListDividersShowcase items={projects} />
+      <ListDividersShowcase items={projects} set={setProjects} />
     </View>
   );
 }
