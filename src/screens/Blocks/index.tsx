@@ -1,12 +1,9 @@
-import { Text, Button } from "@ui-kitten/components";
-import React, { useState, useEffect, useRef } from "react";
-import { ScrollView, View, StyleSheet } from "react-native";
-import ViewShot from "react-native-view-shot";
+import { Button } from "@ui-kitten/components";
+import React, { useState, useRef } from "react";
+import { StyleSheet } from "react-native";
 import { WebView } from "react-native-webview";
 import axios from "axios";
-import { set } from "react-hook-form";
 import { useRoute } from "@react-navigation/native";
-import { json } from "stream/consumers";
 import { getApiURL } from "../../composables/getApiURL";
 
 //Block diagram view
@@ -43,7 +40,7 @@ export default function Blocks() {
       const apiURL = getApiURL();
 
       await axios
-        .post(`${apiUrl}convert`, formData, {
+        .post(`${apiURL}convert`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },

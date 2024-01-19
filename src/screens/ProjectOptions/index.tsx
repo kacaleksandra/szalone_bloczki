@@ -1,11 +1,10 @@
-import { Dimensions, Image, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Button, Text } from "@ui-kitten/components";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
 import { getToken } from "../../composables/getToken";
 import { useState } from "react";
 import { useEffect } from "react";
 import { getApiURL } from "../../composables/getApiURL";
-import { set } from "react-hook-form";
 
 export default function ProjectOptions({ navigation }: any) {
   const route = useRoute();

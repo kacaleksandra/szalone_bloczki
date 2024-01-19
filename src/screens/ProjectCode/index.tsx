@@ -1,10 +1,10 @@
 import { useRoute } from "@react-navigation/native";
-import { useEffect, useState } from "react";
 import { Text, TextInput, View } from "react-native";
 import { getApiURL } from "../../composables/getApiURL";
 import { getToken } from "../../composables/getToken";
 import { Button } from "@ui-kitten/components";
 import * as Clipboard from "expo-clipboard";
+import { useState } from "react";
 
 export function ProjectCode() {
   const route = useRoute();
