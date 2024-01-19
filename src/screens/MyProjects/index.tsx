@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { ListDividersShowcase, IListItem } from "../../components/List";
 import { getApiURL } from "../../composables/getApiURL";
-import useAccessTokenStore from "../../composables/store";
 import { getToken } from "../../composables/getToken";
 
 export default function MyProjects() {
