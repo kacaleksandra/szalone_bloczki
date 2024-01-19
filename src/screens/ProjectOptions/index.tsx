@@ -3,13 +3,22 @@ import { Button, Text } from "@ui-kitten/components";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { getToken } from "../../composables/getToken";
 import { useState } from "react";
+import { useEffect } from "react";
 import { getApiURL } from "../../composables/getApiURL";
+import { set } from "react-hook-form";
 
 export default function ProjectOptions({ navigation }: any) {
   const route = useRoute();
   const token = getToken();
   const [saved, setSaved] = useState(false);
+  const [idProject, setIdProject] = useState(0);
   // const projectProperties = route.params?.projectProperties;
+
+  useEffect(() => {
+    if (route.params?.id) {
+      setIdProject(route.params?.id);
+    }
+  }, []);
 
   async function saveProject() {
     const project = {
@@ -35,13 +44,14 @@ export default function ProjectOptions({ navigation }: any) {
         );
       }
 
+      const data = await response.json();
+
       setSaved(true);
+      setIdProject(data.id);
     } catch (error) {
       console.error("Error saving project", error);
     }
   }
-
-  console.log(route.params?.data);
 
   return (
     <>
@@ -84,7 +94,9 @@ export default function ProjectOptions({ navigation }: any) {
             }}
             size="giant"
             appearance="outline"
-            onPress={() => navigation.navigate("MyProjects")}
+            onPress={() =>
+              navigation.navigate("ProjectCode", { id: idProject })
+            }
           >
             Eksport do kodu
           </Button>
