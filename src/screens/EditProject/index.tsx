@@ -188,6 +188,11 @@ export default function EditProject({ navigation }: any) {
   const renderList = (_blocks: Block[], mainList: Boolean = false) => {
     return (
       <FlatList
+        style={{
+          ...(isKeyboardOpen && {
+            height: "50%",
+          }),
+        }}
         data={_blocks}
         renderItem={({ item, index }) => (
           <>
