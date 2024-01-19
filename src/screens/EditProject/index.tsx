@@ -70,6 +70,13 @@ export default function EditProject({ navigation }: any) {
   const route = useRoute();
   const blocksParam = route.params?.blocks;
 
+  useEffect(() => {
+    if (blocksParam) {
+      const newData = JSON.parse(blocksParam);
+      prepareDataToEdit(newData);
+    }
+  }, []);
+
   const [isListVisible, setIsListVisible] = useState(false);
   const [blocksCounter, setBlocksCounter] = useState(0);
 
@@ -78,6 +85,31 @@ export default function EditProject({ navigation }: any) {
 
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
 
+  let biggestKey = 0;
+
+  const prepareDataToEdit = (newData, newBlocksValues = [], isMain = true) => {
+    //const newBlocksValues = [...blocksValues];
+
+    const updatedData = newData.map((block) => {
+      newBlocksValues[block.key] = block.valuesArray;
+      if (block.key > biggestKey) {
+        biggestKey = block.key;
+      }
+      if (block.hasInside) {
+        block.inside = prepareDataToEdit(block.inside, newBlocksValues, false);
+      }
+      block.getContent = blocksData[block.id].getContent;
+      return block;
+    });
+    console.log(newBlocksValues);
+    setBlocksValues(newBlocksValues);
+    if (isMain) {
+      setBlocks(updatedData);
+      setBlocksCounter(biggestKey + 1); // update the blocksCounter state with the biggest key plus one
+    }
+
+    return updatedData;
+  };
   const onKeyboardDidShow = () => {
     setIsKeyboardOpen(true);
   };
@@ -120,6 +152,7 @@ export default function EditProject({ navigation }: any) {
   };
 
   const initializeBlockValues = (inputAmount: number) => {
+    console.log(blocksValues);
     blocksValues.push(new Array(inputAmount));
     setBlocksValues([...blocksValues]);
   };
@@ -178,6 +211,7 @@ export default function EditProject({ navigation }: any) {
 
   const complete = () => {
     mergeBlocksAndValues(blocks, true);
+    console.log(blocks);
     navigation.navigate("ProjectOptions", {
       name: route.params?.name,
       description: route.params?.description,
