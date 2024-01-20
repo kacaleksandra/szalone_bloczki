@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.Base64;
 
 public class SchematicServiceImpl implements SchematicService {
 
@@ -67,8 +68,9 @@ public class SchematicServiceImpl implements SchematicService {
   }
 
   @Override
-  public byte[] doConvertImageToPdf(byte[] imageData) {
+  public byte[] doConvertImageToPdf(String base64String image) {
     try {
+      byte[] imageData = Base64.getDecoder().decode(image);
       ByteArrayInputStream bis = new ByteArrayInputStream(imageData);
       BufferedImage image = ImageIO.read(bis);
       bis.close();
