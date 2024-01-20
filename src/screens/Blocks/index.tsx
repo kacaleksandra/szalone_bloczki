@@ -1,6 +1,12 @@
-import { Button } from "@ui-kitten/components";
+import {
+  Button,
+  Divider,
+  Icon,
+  IconElement,
+  Text,
+} from "@ui-kitten/components";
 import React, { useState, useRef } from "react";
-import { StyleSheet } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { WebView } from "react-native-webview";
 import axios from "axios";
 import { useRoute } from "@react-navigation/native";
@@ -98,8 +104,64 @@ export default function Blocks() {
     }, 2000);
     //webViewRef.current.postMessage(jsCode);
   };
+
+  const RightIcon = (props: any): IconElement => (
+    <Icon
+      {...props}
+      style={[props.style, { width: 25, height: 25 }]}
+      name="chevron-right-outline"
+    />
+  );
+
+  type Variables = {
+    name: string;
+    value: any;
+  };
+
+  const [variables, setVariables] = useState<Variables[]>([]);
+
+  function nextBlock(withTimeout: boolean = false) {
+    setVariables([{ name: "test", value: "test" }]);
+    console.log("next block");
+  }
+
   return (
     <>
+      <View className="h-1/5 bg-white">
+        {variables && variables.length > 0 && (
+          <ScrollView className="h-3/5">
+            <View className="py-1">
+              <View className="flex flex-row justify-around py-2">
+                <Text style={{ fontWeight: "bold" }}>Nazwa</Text>
+                <Text style={{ fontWeight: "bold" }}>Wartość</Text>
+              </View>
+              {variables.map((variable, index) => (
+                <View
+                  key={index}
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-around",
+                  }}
+                >
+                  <Text>{variable.name}</Text>
+                  <Text>{variable.value}</Text>
+                </View>
+              ))}
+            </View>
+          </ScrollView>
+        )}
+
+        <Divider />
+        <View className="flex flex-row justify-around py-2">
+          <Button
+            onPress={() => nextBlock()}
+            appearance="ghost"
+            size="tiny"
+            accessoryLeft={RightIcon}
+          ></Button>
+          <Button onPress={() => nextBlock(true)}>Tryb ciągły</Button>
+        </View>
+      </View>
       {/* <ScrollView
         maximumZoomScale={2}
         minimumZoomScale={0.5}
@@ -119,11 +181,6 @@ export default function Blocks() {
       <Button onPress={captureScreen} size="large">
         Wygeneruj PDF
       </Button>
-
-      {/*}
-      <View>
-        <Button onPress={captureScreen}>Save as Image</Button>
-      </View> */}
     </>
   );
 }
