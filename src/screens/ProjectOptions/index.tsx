@@ -11,11 +11,13 @@ export default function ProjectOptions({ navigation }: any) {
   const token = getToken();
   const [saved, setSaved] = useState(false);
   const [idProject, setIdProject] = useState(0);
+  const [fromDB, setFromDB] = useState(false);
   // const projectProperties = route.params?.projectProperties;
 
   useEffect(() => {
     if (route.params?.id) {
       setIdProject(route.params?.id);
+      setFromDB(true);
     }
   }, []);
 
@@ -28,25 +30,31 @@ export default function ProjectOptions({ navigation }: any) {
 
     try {
       const apiUrl = getApiURL();
-      const response = await fetch(`${apiUrl}schematics`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json", // Dodaj nagłówek określający typ treści
-        },
-        body: JSON.stringify(project), // Przekazanie danych projektu w ciele żądania
-      });
-
-      if (!response.ok) {
-        throw new Error(
-          `Network request failed with status ${response.status}`
-        );
+      let response;
+      if (fromDB) {
+        console.log("update project");
+      } else {
+        response = await fetch(`${apiUrl}schematics`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json", // Dodaj nagłówek określający typ treści
+          },
+          body: JSON.stringify(project), // Przekazanie danych projektu w ciele żądania
+        });
       }
+      if (response) {
+        if (!response.ok) {
+          throw new Error(
+            `Network request failed with status ${response.status}`
+          );
+        }
 
-      const data = await response.json();
+        const data = await response.json();
 
-      setSaved(true);
-      setIdProject(data.id);
+        setSaved(true);
+        setIdProject(data.id);
+      }
     } catch (error) {
       console.error("Error saving project", error);
     }
