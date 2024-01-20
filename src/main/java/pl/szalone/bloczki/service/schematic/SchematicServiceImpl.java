@@ -68,9 +68,9 @@ public class SchematicServiceImpl implements SchematicService {
   }
 
   @Override
-  public byte[] doConvertImageToPdf(String base64String image) {
+  public byte[] doConvertImageToPdf(String base64String image22) {
     try {
-      byte[] imageData = Base64.getDecoder().decode(image);
+      byte[] imageData = Base64.getDecoder().decode(image22);
       ByteArrayInputStream bis = new ByteArrayInputStream(imageData);
       BufferedImage image = ImageIO.read(bis);
       bis.close();
