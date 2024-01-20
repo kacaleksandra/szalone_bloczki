@@ -101,7 +101,7 @@ export default function Blocks() {
     console.log("sending object to webview");
     setTimeout(() => {
       webViewRef.current.postMessage(jsCode);
-    }, 2000);
+    }, 500);
     //webViewRef.current.postMessage(jsCode);
   };
 
@@ -117,13 +117,17 @@ export default function Blocks() {
     name: string;
     value: any;
   };
-
+  const [loading, setLoading] = useState(true);
   const [variables, setVariables] = useState<Variables[]>([]);
 
   function nextBlock(withTimeout: boolean = false) {
     setVariables([{ name: "test", value: "test" }]);
     console.log("next block");
   }
+
+  const onLoadEndHandler = () => {
+    setLoading(false);
+  };
 
   return (
     <>
