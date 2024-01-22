@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import io.ebeaninternal.server.expression.Op;
 import io.javalin.Javalin;
 import io.javalin.http.HttpStatus;
 import lombok.AllArgsConstructor;
@@ -20,7 +19,6 @@ import pl.szalone.bloczki.util.AppComponentLocator;
 
 import java.text.MessageFormat;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class CodeConverterServiceImpl implements CodeConverterService {
 
@@ -53,11 +51,16 @@ public class CodeConverterServiceImpl implements CodeConverterService {
 
   private List<String> getLineCode(JsonObject object, List<String> data, int deepLevel) {
     Operations operation = Operations.getById(object.get("id").getAsInt());
+    if(operation == Operations.CREATE_RANDOM_ARR && (data.isEmpty() || !data.get(0).contains("numpy"))) {
+      data.add(0, "import random");
+      data.add(1, "");
+    }
     JsonArray valuesArray = object.get("valuesArray").getAsJsonArray();
     data.add("  ".repeat(deepLevel) + MessageFormat.format(operation.getCode(), doFormatValues(operation, valuesArray.asList())));
     if (!object.get("inside").getAsJsonArray().isEmpty()) {
+      deepLevel = deepLevel + 1;
       for(JsonElement element : object.get("inside").getAsJsonArray().asList()) {
-        return getLineCode(element.getAsJsonObject(), data, deepLevel + 1);
+        data = getLineCode(element.getAsJsonObject(), data, deepLevel);
       }
     }
     return data;
@@ -65,18 +68,14 @@ public class CodeConverterServiceImpl implements CodeConverterService {
 
   private Object[] doFormatValues(Operations operation, List<JsonElement> formatValues) {
     List<String> values = new ArrayList<>();
-    if(operation == Operations.CREATE_RANDOM_ARR) {
-      StringJoiner joiner = new StringJoiner(",");
-      for(int i = 0; i < formatValues.get(0).getAsInt(); i++) {
-        joiner.add(String.valueOf(i));
-      }
-      values.add(joiner.toString());
-      return values.toArray();
-    }
     for(JsonElement element : formatValues) {
       try {
-        values.add(EqualityOperators.getById(element.getAsInt()).getCode());
-      } catch (Exception ex) {
+        if(operation == Operations.CONDITIONAL || operation == Operations.WHILE) {
+          values.add(EqualityOperators.getById(element.getAsInt()).getCode());
+        } else {
+          values.add(element.getAsString());
+        }
+      } catch (Exception ignored) {
         values.add(element.getAsString());
       }
     }
@@ -86,9 +85,9 @@ public class CodeConverterServiceImpl implements CodeConverterService {
   @Getter
   @AllArgsConstructor
   public enum Operations {
-    PRINT_TEXT(0, "print(''{0}'')"), PRINT_VAR(1, "print({0})"), SET_VAR(2, "{0} = ''{1}''"),
+    PRINT_TEXT(0, "print(''{0}'')"), PRINT_VAR(1, "print({0})"), SET_VAR(2, "{0} = {1}"),
     CONDITIONAL(3, "if {0} {1} {2}:"), WHILE(4, "while {0} {1} {2}:"), CREATE_ARR(5, "{0} = []"),
-    CREATE_RANDOM_ARR(6, "{0} = [{1}]"), ASSIGN_TO_ARR(7, "{0}[{1}] = {2}"), PUSH_TO_ARR(8, "{0}.append({1})"),
+    CREATE_RANDOM_ARR(6, "{0} = random.sample(range(1, {1} + 1), {1})"), ASSIGN_TO_ARR(7, "{0}[{1}] = {2}"), PUSH_TO_ARR(8, "{0}.append({1})"),
     REMOVE_FROM_ARR(9, "{0}.remove({1})");
 
     public static Operations getById(int id) {
