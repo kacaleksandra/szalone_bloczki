@@ -32,15 +32,23 @@ export default function ProjectOptions({ navigation }: any) {
       const apiUrl = getApiURL();
       let response;
       if (fromDB) {
-        console.log("update project");
+        console.log(`schematics?id=${route.params?.id}`);
+        response = await fetch(`${apiUrl}schematics?id=${route.params?.id}`, {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(project),
+        });
       } else {
         response = await fetch(`${apiUrl}schematics`, {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json", // Dodaj nagłówek określający typ treści
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify(project), // Przekazanie danych projektu w ciele żądania
+          body: JSON.stringify(project),
         });
       }
       if (response) {
@@ -78,6 +86,9 @@ export default function ProjectOptions({ navigation }: any) {
             appearance="filled"
             onPress={() =>
               navigation.navigate("EditProject", {
+                id: route.params?.id,
+                name: route.params?.name,
+                description: route.params?.description,
                 blocks: route.params?.data,
               })
             }

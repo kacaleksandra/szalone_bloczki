@@ -213,6 +213,7 @@ export default function EditProject({ navigation }: any) {
     mergeBlocksAndValues(blocks, true);
     console.log(blocks);
     navigation.navigate("ProjectOptions", {
+      id: route.params?.id,
       name: route.params?.name,
       description: route.params?.description,
       data: JSON.stringify(blocks, null, 2),
