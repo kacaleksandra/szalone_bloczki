@@ -38,29 +38,45 @@ public class SchematicServiceImpl implements SchematicService {
   @Override
   public List<FetchSchematicDto> getSchematics(User user) {
     return schematicRepository.findByUser(user)
-        .stream()
-        .map(Schematic::toFetchDto)
-        .collect(Collectors.toList());
+      .stream()
+      .map(Schematic::toFetchDto)
+      .collect(Collectors.toList());
   }
 
   @Override
   public FetchSchematicDto postSchematic(User user, PostSchematicDto dto) {
     Optional<Schematic> optional = schematicRepository.findByDataAndUser(dto.getData(), user);
-    if(optional.isPresent()) {
+    if (optional.isPresent()) {
       throw new RestException(HttpStatus.BAD_REQUEST, "Schemat jest juz zapisany.");
     }
     return new Schematic()
-        .setData(dto.getData())
-        .setUser(user)
-        .save(schematicRepository)
-        .toFetchDto();
+      .setData(dto.getData())
+      .setName(dto.getName())
+      .setDescription(dto.getDescription())
+      .setUser(user)
+      .save(schematicRepository)
+      .toFetchDto();
+  }
+
+  @Override
+  public FetchSchematicDto patchSchematic(User user, long id, PostSchematicDto dto) {
+    Schematic schematic = schematicRepository.findById(id)
+      .orElseThrow(() -> new RestException(HttpStatus.NOT_FOUND, "Schemat o takim ID nie istnieje."));
+    if(!schematic.getUser().equals(user)) {
+      throw new RestException(HttpStatus.BAD_REQUEST, "Nie mozesz edytowac cudzego schematu.");
+    }
+    return schematic.setName(dto.getName())
+      .setDescription(dto.getDescription())
+      .setData(dto.getData())
+      .save(schematicRepository)
+      .toFetchDto();
   }
 
   @Override
   public boolean deleteSchematic(User user, long id) {
     Schematic schematic = schematicRepository.findById(id)
-        .orElseThrow(() -> new RestException(HttpStatus.BAD_REQUEST, "Schemat o takim id nie istnieje."));
-    if(!schematic.getUser().equals(user)) {
+      .orElseThrow(() -> new RestException(HttpStatus.BAD_REQUEST, "Schemat o takim id nie istnieje."));
+    if (!schematic.getUser().equals(user)) {
       throw new RestException(HttpStatus.BAD_REQUEST, "Nie mozesz usunac cudzego schematu.");
     }
     schematicRepository.delete(schematic);
@@ -68,9 +84,9 @@ public class SchematicServiceImpl implements SchematicService {
   }
 
   @Override
-  public byte[] doConvertImageToPdf(String base64String image22) {
+  public byte[] doConvertImageToPdf(String base64) {
     try {
-      byte[] imageData = Base64.getDecoder().decode(image22);
+      byte[] imageData = Base64.getDecoder().decode(base64);
       ByteArrayInputStream bis = new ByteArrayInputStream(imageData);
       BufferedImage image = ImageIO.read(bis);
       bis.close();

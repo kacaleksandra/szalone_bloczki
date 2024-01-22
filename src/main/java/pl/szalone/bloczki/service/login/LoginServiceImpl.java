@@ -45,7 +45,7 @@ public class LoginServiceImpl implements LoginService {
         .withIssuer(user.getLogin())
         .withIssuedAt(Instant.now())
         .withExpiresAt(Instant.now().plus(7, TimeUnit.DAYS.toChronoUnit()))
-        .sign(Algorithm.HMAC512(System.getenv("JWT_SECRET")));
+        .sign(Algorithm.HMAC512(System.getenv("JWT_TOKEN")));
     Map<String, Object> data = new HashMap<>();
     data.put("access_token", token);
     //data.put("refresh_token", user.getRefreshToken());
@@ -80,7 +80,7 @@ public class LoginServiceImpl implements LoginService {
         .withIssuer(user.getLogin())
         .withIssuedAt(Instant.now())
         .withExpiresAt(Instant.now().plus(7, TimeUnit.DAYS.toChronoUnit()))
-        .sign(Algorithm.HMAC512(System.getenv("JWT_SECRET")));
+        .sign(Algorithm.HMAC512(System.getenv("JWT_TOKEN")));
     user.setRefreshToken(BCrypt.withDefaults().hashToString(12, refreshToken.toString().toCharArray()))
         .save(userRepository);
     Map<String, Object> data = new HashMap<>();

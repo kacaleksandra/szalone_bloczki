@@ -12,10 +12,7 @@ import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.szalone.bloczki.config.SecurityConfig;
-import pl.szalone.bloczki.controller.AppController;
-import pl.szalone.bloczki.controller.LoginController;
-import pl.szalone.bloczki.controller.SchematicController;
-import pl.szalone.bloczki.controller.UserController;
+import pl.szalone.bloczki.controller.*;
 import pl.szalone.bloczki.domain.AppEntity;
 import pl.szalone.bloczki.exception.ExceptionHandler;
 import pl.szalone.bloczki.exception.RestException;
@@ -24,6 +21,7 @@ import pl.szalone.bloczki.repository.schematic.SchematicRepositoryImpl;
 import pl.szalone.bloczki.repository.user.UserRepository;
 import pl.szalone.bloczki.repository.user.UserRepositoryImpl;
 import pl.szalone.bloczki.service.AppService;
+import pl.szalone.bloczki.service.codeconvert.CodeConverterServiceImpl;
 import pl.szalone.bloczki.service.login.LoginServiceImpl;
 import pl.szalone.bloczki.service.schematic.SchematicServiceImpl;
 import pl.szalone.bloczki.service.user.UserServiceImpl;
@@ -117,6 +115,7 @@ public class BloczkiApplication {
     services.add(new LoginServiceImpl());
     services.add(new SchematicServiceImpl());
     services.add(new UserServiceImpl());
+    services.add(new CodeConverterServiceImpl());
     servicesLocator.fillComponents(services);
     services.forEach(service -> service.doRegisterService(app, repositoriesLocator));
   }
@@ -125,6 +124,7 @@ public class BloczkiApplication {
     controllers.add(new LoginController());
     controllers.add(new SchematicController());
     controllers.add(new UserController());
+    controllers.add(new CodeConverterController());
     RequestValidator validator = new RequestValidator(repositoriesLocator.findComponent(UserRepository.class));
 
     controllers.forEach(controller -> controller.doRegisterController(app, servicesLocator, validator));

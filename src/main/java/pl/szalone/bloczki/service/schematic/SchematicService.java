@@ -13,8 +13,10 @@ public interface SchematicService extends AppService {
 
   FetchSchematicDto postSchematic(User user, PostSchematicDto dto);
 
+  FetchSchematicDto patchSchematic(User user, long id, PostSchematicDto dto);
+
   boolean deleteSchematic(User user, long id);
 
-  byte[] doConvertImageToPdf(byte[] imageBytes);
+  byte[] doConvertImageToPdf(String base64);
 
 }

@@ -20,7 +20,7 @@ public class RequestValidator {
     if(login == null) {
       throw new RestException(HttpStatus.FORBIDDEN, "Authorization is required to access this content.");
     }
-    return userRepository.findByCredentials(login, null).orElseThrow(() -> new RestException(HttpStatus.FORBIDDEN, "Invalid authorization."));
+    return userRepository.findByLogin(login).orElseThrow(() -> new RestException(HttpStatus.FORBIDDEN, "Invalid authorization."));
   }
 
 }
