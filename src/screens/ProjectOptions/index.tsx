@@ -11,11 +11,13 @@ export default function ProjectOptions({ navigation }: any) {
   const token = getToken();
   const [saved, setSaved] = useState(false);
   const [idProject, setIdProject] = useState(0);
+  const [fromDB, setFromDB] = useState(false);
   // const projectProperties = route.params?.projectProperties;
 
   useEffect(() => {
     if (route.params?.id) {
       setIdProject(route.params?.id);
+      setFromDB(true);
     }
   }, []);
 
@@ -28,25 +30,39 @@ export default function ProjectOptions({ navigation }: any) {
 
     try {
       const apiUrl = getApiURL();
-      const response = await fetch(`${apiUrl}schematics`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json", // Dodaj nagłówek określający typ treści
-        },
-        body: JSON.stringify(project), // Przekazanie danych projektu w ciele żądania
-      });
-
-      if (!response.ok) {
-        throw new Error(
-          `Network request failed with status ${response.status}`
-        );
+      let response;
+      if (fromDB) {
+        console.log(`schematics{route.params?.id}`);
+        response = await fetch(`${apiUrl}schematics/${route.params?.id}`, {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(project),
+        });
+      } else {
+        response = await fetch(`${apiUrl}schematics`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(project),
+        });
       }
+      if (response) {
+        if (!response.ok) {
+          throw new Error(
+            `Network request failed with status ${response.status}`
+          );
+        }
 
-      const data = await response.json();
+        const data = await response.json();
 
-      setSaved(true);
-      setIdProject(data.id);
+        setSaved(true);
+        setIdProject(data.id);
+      }
     } catch (error) {
       console.error("Error saving project", error);
     }
@@ -70,6 +86,9 @@ export default function ProjectOptions({ navigation }: any) {
             appearance="filled"
             onPress={() =>
               navigation.navigate("EditProject", {
+                id: route.params?.id,
+                name: route.params?.name,
+                description: route.params?.description,
                 blocks: route.params?.data,
               })
             }

@@ -1,13 +1,20 @@
-import { Button } from "@ui-kitten/components";
+import {
+  Button,
+  Divider,
+  Icon,
+  IconElement,
+  Text,
+} from "@ui-kitten/components";
 import React, { useState, useRef } from "react";
-import { StyleSheet } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { WebView } from "react-native-webview";
 import axios from "axios";
 import { useRoute } from "@react-navigation/native";
 import { getApiURL } from "../../composables/getApiURL";
 import ViewShot from "react-native-view-shot";
-import { Buffer } from "buffer";
+import * as FileSystem from "expo-file-system";
 import { getToken } from "../../composables/getToken";
+import { Buffer } from "buffer";
 
 //Block diagram view
 export default function Blocks() {
@@ -76,11 +83,10 @@ export default function Blocks() {
   const captureScreen = () => {
     if (viewShot.current != null) {
       console.log("taking screenshot");
-      viewShot.current.capture().then((uri: string) => {
+      viewShot.current.capture().then(async (uri: string) => {
         setUri(uri);
-        uploadImage(uri);
+        await uploadImage(uri);
       });
-      console.log(uri);
     } else {
       return;
     }
@@ -101,20 +107,76 @@ export default function Blocks() {
     console.log("sending object to webview");
     setTimeout(() => {
       webViewRef.current.postMessage(jsCode);
-    }, 2000);
+    }, 500);
     //webViewRef.current.postMessage(jsCode);
   };
+
+  const RightIcon = (props: any): IconElement => (
+    <Icon
+      {...props}
+      style={[props.style, { width: 25, height: 25 }]}
+      name="chevron-right-outline"
+    />
+  );
+
+  type Variables = {
+    name: string;
+    value: any;
+  };
+  const [loading, setLoading] = useState(true);
+  const [variables, setVariables] = useState<Variables[]>([]);
+
+  function nextBlock(withTimeout: boolean = false) {
+    setVariables([{ name: "test", value: "test" }]);
+    console.log("next block");
+  }
+
   return (
     <>
+      <View className="h-1/5 bg-white">
+        {variables && variables.length > 0 && (
+          <ScrollView className="h-3/5">
+            <View className="py-1">
+              <View className="flex flex-row justify-around py-2">
+                <Text style={{ fontWeight: "bold" }}>Nazwa</Text>
+                <Text style={{ fontWeight: "bold" }}>Wartość</Text>
+              </View>
+              {variables.map((variable, index) => (
+                <View
+                  key={index}
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-around",
+                  }}
+                >
+                  <Text>{variable.name}</Text>
+                  <Text>{variable.value}</Text>
+                </View>
+              ))}
+            </View>
+          </ScrollView>
+        )}
+
+        <Divider />
+        <View className="flex flex-row justify-around py-2">
+          <Button
+            onPress={() => nextBlock()}
+            appearance="ghost"
+            size="tiny"
+            accessoryLeft={RightIcon}
+          ></Button>
+          <Button onPress={() => nextBlock(true)}>Tryb ciągły</Button>
+        </View>
+      </View>
       {/* <ScrollView
         maximumZoomScale={2}
         minimumZoomScale={0.5}
         contentContainerStyle={styles.container}
-      >*/}
+      > */}
       <ViewShot
         ref={viewShot}
-        options={{ format: "jpg", quality: 1 }}
-        style={{ width: "100%", height: "90%" }}
+        options={{ format: "jpg", quality: 0.9 }}
+        style={{ height: "73.5%" }}
       >
         <WebView
           ref={webViewRef}
@@ -128,11 +190,6 @@ export default function Blocks() {
       <Button onPress={captureScreen} size="large">
         Wygeneruj PDF
       </Button>
-
-      {/*}
-      <View>
-        <Button onPress={captureScreen}>Save as Image</Button>
-      </View> */}
     </>
   );
 }
