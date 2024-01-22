@@ -32,8 +32,8 @@ export default function ProjectOptions({ navigation }: any) {
       const apiUrl = getApiURL();
       let response;
       if (fromDB) {
-        console.log(`schematics?id=${route.params?.id}`);
-        response = await fetch(`${apiUrl}schematics?id=${route.params?.id}`, {
+        console.log(`schematics{route.params?.id}`);
+        response = await fetch(`${apiUrl}schematics/${route.params?.id}`, {
           method: "PATCH",
           headers: {
             Authorization: `Bearer ${token}`,
