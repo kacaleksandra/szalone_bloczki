@@ -49,7 +49,7 @@ export default function Blocks() {
       await axios
         .post(
           `${apiURL}convert`,
-          { image: base64Image },
+          { data: base64Image },
           {
             headers: {
               "Content-Type": "application/json",
