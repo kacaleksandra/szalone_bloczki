@@ -4,7 +4,7 @@ import { getApiURL } from "../../composables/getApiURL";
 import { getToken } from "../../composables/getToken";
 import { Button } from "@ui-kitten/components";
 import * as Clipboard from "expo-clipboard";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export function ProjectCode() {
   const route = useRoute();
@@ -21,11 +21,12 @@ Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
 
   const [code, setCode] = useState(longText);
 
-  //   useEffect(() => {
-  //     fetchCode();
-  //   }, []);
+  useEffect(() => {
+    fetchCode();
+  }, []);
 
   async function fetchCode() {
+    const json = JSON.stringify({ schematicId: idProject });
     try {
       const apiUrl = getApiURL();
       const response = await fetch(`${apiUrl}blocksToCode`, {
@@ -34,17 +35,17 @@ Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(idProject),
+        body: json,
       });
 
       if (!response.ok) {
-        throw new Error(
-          `Network request failed with status ${response.status}`
-        );
+        throw new Error(`Network request failed with status ${response}`);
       }
-
+      console.log("Data", JSON.stringify(response));
       const data = await response.json();
-      setCode(data.data);
+      console.log(data);
+      let text = data.data.map((textLine: string) => textLine + "\n").join("");
+      setCode(text);
     } catch (error) {
       console.error("Error generating code", error);
     }

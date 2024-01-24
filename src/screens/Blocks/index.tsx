@@ -15,6 +15,7 @@ import ViewShot from "react-native-view-shot";
 import * as FileSystem from "expo-file-system";
 import { getToken } from "../../composables/getToken";
 import { Buffer } from "buffer";
+import RNHTMLtoPDF from "react-native-html-to-pdf";
 
 //Block diagram view
 export default function Blocks() {
@@ -44,7 +45,8 @@ export default function Blocks() {
       const reader = new FileReader();
       reader.readAsDataURL(imageBlob);
       reader.onloadend = async function () {
-        const base64data = reader.result;
+        const base64data = reader.result.split(",")[1];
+        console.log("Type of base64data:", typeof base64data);
         const apiURL = getApiURL();
         await axios
           .post(
@@ -53,12 +55,16 @@ export default function Blocks() {
             {
               headers: {
                 Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
+                // "Content-Type": "text/plain",
+                // "Content-Type": "application/json",
               },
             }
           )
           .then((response) => {
-            console.log(response.data);
+            console.log("działa");
+          })
+          .catch((error) => {
+            console.log(error.request);
           });
       };
     } catch (error) {
