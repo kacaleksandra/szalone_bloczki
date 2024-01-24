@@ -34,7 +34,7 @@ export default function Blocks() {
   //   setTableContent(helper);
   // };
 
-  const uploadImage = async (imageUri: string, fileName: string) => {
+  const uploadImage = async (imageUri: string) => {
     try {
       const image = await fetch(imageUri);
       const imageBlob = await image.blob();
@@ -55,24 +55,11 @@ export default function Blocks() {
         {
           headers: { "Content-Type": "application/json" },
           method: "POST",
-          body: JSON.stringify({
-            Parameters: [
-              {
-                Name: "File",
-                FileValue: {
-                  Name: "plik.pdf",
-                  Data: base64data.toString(),
-                },
-              },
-              {
-                Name: "StoreFile",
-                Value: true,
-              },
-            ],
-          }),
+          body: JSON.stringify({ File: imageBlob }),
         }
       );
-
+      const data = await response.json();
+      console.log(data);
       if (!response.ok) {
         throw new Error(
           `Network request failed with status ${response.status}`
