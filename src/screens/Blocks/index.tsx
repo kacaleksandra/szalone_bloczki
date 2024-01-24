@@ -9,9 +9,9 @@ import React, { useState, useRef } from "react";
 import { Alert, ScrollView, StyleSheet, View } from "react-native";
 import { WebView } from "react-native-webview";
 import { useRoute } from "@react-navigation/native";
-import { getApiURL } from "../../composables/getApiURL";
 import ViewShot from "react-native-view-shot";
 import { getToken } from "../../composables/getToken";
+import * as Clipboard from "expo-clipboard";
 
 //Block diagram view
 export default function Blocks() {
@@ -82,8 +82,18 @@ export default function Blocks() {
         "https://v2.convertapi.com/convert/jpg/to/pdf?Secret=cEQJxFRAJ6DrvzDe",
         requestOptions
       )
-        .then((response) => response.text())
-        .then((result) => console.log(result))
+        .then(async (response) => {
+          const data = await response.json();
+          console.log(data);
+          setUri(data.Files[0].Url);
+          Alert.alert("Został wygenerowany PDF", "", [
+            {
+              text: "Skopiuj do schowka",
+              onPress: async () =>
+                await Clipboard.setStringAsync(data.Files[0].Url),
+            },
+          ]);
+        })
         .catch((error) => console.log("error", error));
     } catch (error) {
       console.error("Upload failed:", error);
