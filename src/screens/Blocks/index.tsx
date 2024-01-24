@@ -37,12 +37,13 @@ export default function Blocks() {
   const uploadImage = async (imageUri: string) => {
     try {
       const image = await fetch(imageUri);
+
       const imageBlob = await image.blob();
 
-      const base64data = await new Promise((resolve, reject) => {
+      const base64data: string = await new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(imageBlob);
-        reader.onloadend = () => resolve(reader.result);
+        reader.onloadend = () => resolve(reader.result as string);
         reader.onerror = reject;
       });
 
@@ -50,50 +51,44 @@ export default function Blocks() {
         throw new Error("Base64 data is undefined or null");
       }
 
-      const response = await fetch(
-        "https://v2.convertapi.com/convert/jpg/to/pdf?Secret=cEQJxFRAJ6DrvzDe",
-        {
-          headers: { "Content-Type": "application/json" },
-          method: "POST",
-          body: JSON.stringify({ File: imageBlob }),
-        }
-      );
-      const data = await response.json();
-      console.log(data);
-      if (!response.ok) {
-        throw new Error(
-          `Network request failed with status ${response.status}`
-        );
-      }
+      const name = imageUri.split("/").pop();
 
-      const pdfLink = await response.json();
-      console.log(pdfLink);
+      const payload = {
+        Parameters: [
+          {
+            Name: "File",
+            FileValue: {
+              Name: name,
+              Data: base64data.split(",")[1],
+            },
+          },
+          {
+            Name: "StoreFile",
+            Value: true,
+          },
+        ],
+      };
+
+      const headers = new Headers();
+      headers.append("Content-Type", "application/json");
+
+      const requestOptions = {
+        method: "POST",
+        body: JSON.stringify(payload),
+        headers,
+      };
+
+      fetch(
+        "https://v2.convertapi.com/convert/jpg/to/pdf?Secret=cEQJxFRAJ6DrvzDe",
+        requestOptions
+      )
+        .then((response) => response.text())
+        .then((result) => console.log(result))
+        .catch((error) => console.log("error", error));
     } catch (error) {
       console.error("Upload failed:", error);
     }
   };
-
-  // const apiURL = getApiURL();
-
-  //   const response = await fetch(`${apiURL}convert`, {
-  //     headers: {
-  //       Authorization: `Bearer ${token}`,
-  //       "Content-Type": "text/plain",
-  //     },
-  //     method: "POST",
-  //     body: base64data.toString(),
-  //   });
-
-  //   if (!response.ok) {
-  //     throw new Error(
-  //       `Network request failed with status ${response.status}`
-  //     );
-  //   }
-  //   const pdfBlob = await response.blob();
-  // } catch (error) {
-  //   console.error("Upload failed:", error);
-  // }
-  // };
 
   const viewShot = useRef<any>(null);
   const [uri, setUri] = useState<string>("");
