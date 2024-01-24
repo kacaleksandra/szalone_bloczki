@@ -27,7 +27,7 @@ export default function Blocks() {
 
   const uploadImage = async (imageUri: String) => {
     try {
-      console.log(imageUri);
+      // console.log(imageUri);
       const formData = new FormData();
       formData.append("image", {
         uri: imageUri,
@@ -42,7 +42,8 @@ export default function Blocks() {
           },
         })
         .then((response) => {
-          console.log(response.data);
+          // console.log("dziala");
+          // console.log(response.data);
         });
     } catch (error) {
       console.error("Upload failed:", error);
@@ -93,7 +94,6 @@ export default function Blocks() {
         setUri(uri);
         uploadImage(uri);
       });
-      console.log(uri);
     } else {
       return;
     }

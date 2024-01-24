@@ -6,16 +6,12 @@ import {
   Text,
 } from "@ui-kitten/components";
 import React, { useState, useRef } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { Alert, ScrollView, StyleSheet, View } from "react-native";
 import { WebView } from "react-native-webview";
-import axios from "axios";
 import { useRoute } from "@react-navigation/native";
 import { getApiURL } from "../../composables/getApiURL";
 import ViewShot from "react-native-view-shot";
-import * as FileSystem from "expo-file-system";
 import { getToken } from "../../composables/getToken";
-import { Buffer } from "buffer";
-import RNHTMLtoPDF from "react-native-html-to-pdf";
 
 //Block diagram view
 export default function Blocks() {
@@ -38,56 +34,85 @@ export default function Blocks() {
   //   setTableContent(helper);
   // };
 
-  const uploadImage = async (imageUri: string) => {
+  const uploadImage = async (imageUri: string, fileName: string) => {
     try {
       const image = await fetch(imageUri);
       const imageBlob = await image.blob();
-      const reader = new FileReader();
-      reader.readAsDataURL(imageBlob);
-      reader.onloadend = async function () {
-        const base64data = reader.result.split(",")[1];
-        console.log("Type of base64data:", typeof base64data);
-        const apiURL = getApiURL();
-        await axios
-          .post(
-            `${apiURL}convert`,
-            { data: base64data },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-                // "Content-Type": "text/plain",
-                // "Content-Type": "application/json",
+
+      const base64data = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(imageBlob);
+        reader.onloadend = () => resolve(reader.result);
+        reader.onerror = reject;
+      });
+
+      if (!base64data) {
+        throw new Error("Base64 data is undefined or null");
+      }
+
+      const response = await fetch(
+        "https://v2.convertapi.com/convert/jpg/to/pdf?Secret=cEQJxFRAJ6DrvzDe",
+        {
+          headers: { "Content-Type": "application/json" },
+          method: "POST",
+          body: JSON.stringify({
+            Parameters: [
+              {
+                Name: "File",
+                FileValue: {
+                  Name: "plik.pdf",
+                  Data: base64data.toString(),
+                },
               },
-            }
-          )
-          .then((response) => {
-            console.log("działa");
-          })
-          .catch((error) => {
-            console.log(error.request);
-          });
-      };
+              {
+                Name: "StoreFile",
+                Value: true,
+              },
+            ],
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(
+          `Network request failed with status ${response.status}`
+        );
+      }
+
+      const pdfLink = await response.json();
+      console.log(pdfLink);
     } catch (error) {
       console.error("Upload failed:", error);
     }
   };
 
-  //to pewnie do innego pliku pójdzie
-  // const styles = StyleSheet.create({
-  //   container: {
-  //     width: WIDTH * SIZE + 2 * BORDERWIDTH,
-  //     borderColor: "blue",
-  //     borderWidth: 1,
-  //     margin: 5,
-  //     marginTop: 40,
-  //   },
-  // });
+  // const apiURL = getApiURL();
+
+  //   const response = await fetch(`${apiURL}convert`, {
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //       "Content-Type": "text/plain",
+  //     },
+  //     method: "POST",
+  //     body: base64data.toString(),
+  //   });
+
+  //   if (!response.ok) {
+  //     throw new Error(
+  //       `Network request failed with status ${response.status}`
+  //     );
+  //   }
+  //   const pdfBlob = await response.blob();
+  // } catch (error) {
+  //   console.error("Upload failed:", error);
+  // }
+  // };
 
   const viewShot = useRef<any>(null);
   const [uri, setUri] = useState<string>("");
 
-  const captureScreen = () => {
-    if (viewShot.current != null) {
+  const captureScreen = async () => {
+    if (viewShot.current !== null) {
       console.log("taking screenshot");
       viewShot.current.capture().then(async (uri: string) => {
         setUri(uri);
