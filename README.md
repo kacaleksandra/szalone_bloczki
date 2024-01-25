@@ -1,9 +1,8 @@
-
 https://github.com/kacaleksandra/szalone_bloczki/assets/49205215/ff016902-f1ad-4705-8fa7-51793eb56d7a
 
 # SzaloneBloczki
 
-Celem projektu jest stworzenie aplikacji mobilnej o nazwie „SzaloneBloczki”, która będzie pełniła funkcję edukacyjną poprzez pomoc w zrozumieniu działaniu algorytmów oraz schematów blokowych.
+Celem projektu było stworzenie aplikacji mobilnej o nazwie „SzaloneBloczki”, która pełni funkcję edukacyjną poprzez pomoc w zrozumieniu działaniu algorytmów oraz schematów blokowych.
 
 ## Cel Projektu
 
@@ -24,7 +23,6 @@ Aplikacja mobilna powinna zawierać następujące podstawowe funkcjonalności:
 - Odczyt i zapis utworzonych schematów blokowych.
 
 - Eksport algorytmu do Python.
-
 
 ## Uruchamianie Projektu
 
