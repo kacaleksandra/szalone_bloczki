@@ -1,3 +1,6 @@
+
+https://github.com/kacaleksandra/szalone_bloczki/assets/49205215/ff016902-f1ad-4705-8fa7-51793eb56d7a
+
 # SzaloneBloczki
 
 Celem projektu jest stworzenie aplikacji mobilnej o nazwie „SzaloneBloczki”, która będzie pełniła funkcję edukacyjną poprzez pomoc w zrozumieniu działaniu algorytmów oraz schematów blokowych.
@@ -12,29 +15,16 @@ Aplikacja mobilna powinna zawierać następujące podstawowe funkcjonalności:
 
 - Możliwość tworzenia własnych schematów blokowych.
 
-- Wizualizację algorytmów na podstawie utworzonych schematów blokowych – obsługa przynajmniej podstawowych algorytmów sortowania.
-
-- Możliwość eksportu schematu blokowego do formatu PDF.
-
-- Podgląd zmiennych w czasie wizualizacji algorytmu.
+- Wizualizację algorytmów na podstawie utworzonych schematów blokowych.
 
 - Pracę krokową i ciągłą – użytkownik może wybrać tryb pracy krokowej lub tryb ciągły.
 
+- Możliwość eksportu schematu blokowego do formatu PDF.
+
 - Odczyt i zapis utworzonych schematów blokowych.
 
-- Eksport algorytmu do wybranego języka programowania.
+- Eksport algorytmu do Python.
 
-## Funkcjonalność Dodatkowa
-
-Jako funkcjonalność dodatkową, zapewniającą „efekt wow” jest obsługa większej ilości algorytmów, a nie tylko podstawowych sortowań.
-
-## Technologie Front-end
-
-Do realizacji projektu "SzaloneBloczki" wykorzystamy następujące technologie po stronie front-endowej:
-
-1.  **React Native:** Główną platformą do tworzenia aplikacji mobilnej jest React Native. Umożliwia on tworzenie aplikacji na platformy Android i iOS, używając języka JavaScript i biblioteki React.
-
-2.  **Zustand:** Do zarządzania globalnym stanem aplikacji wykorzystamy bibliotekę Zustand. Jest to minimalistyczna i wydajna biblioteka zarządzania stanem, idealnie integrująca się z React.
 
 ## Uruchamianie Projektu
 
