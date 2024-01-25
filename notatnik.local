@@ -1,7 +1,0 @@
-w node modules > expo >AppEntry.js
-
-import registerRootComponent from 'expo/build/launch/registerRootComponent';
-
-import App from '../../src/screens/App';
-
-registerRootComponent(App);

@@ -276,5 +276,4 @@ export const blocksData = [
       </>
     ),
   },
-  // More blocks...
 ];

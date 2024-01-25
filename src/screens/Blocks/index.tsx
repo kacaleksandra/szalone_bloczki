@@ -13,26 +13,9 @@ import ViewShot from "react-native-view-shot";
 import { getToken } from "../../composables/getToken";
 import * as Clipboard from "expo-clipboard";
 
-//Block diagram view
 export default function Blocks() {
-  // const WIDTH = 5;
-  // const SIZE = 130;
-  // const BORDERWIDTH = 1;
   const route = useRoute();
   const token = getToken();
-  // const [tableContent, setTableContent] = useState(
-  //   Array.from({ length: HEIGHT }, (v) =>
-  //     Array.from({ length: WIDTH }, (v) => 0)
-  //   )
-  // );
-
-  // const setArrayValue = (row: number, column: number, value: any) => {
-  //   if (column < 0 || row < 0) return null;
-  //   if (column >= HEIGHT || row >= WIDTH) return null;
-  //   let helper = [...tableContent];
-  //   helper[column][row] = value;
-  //   setTableContent(helper);
-  // };
 
   const uploadImage = async (imageUri: string) => {
     try {
@@ -124,14 +107,11 @@ export default function Blocks() {
 
   const sendObjectToWebView = () => {
     const jsonString = route.params.blocks;
-    //const escapedJsonString = JSON.stringify(jsonString);
     const jsCode = jsonString;
-    //const jsCode = `window.postMessage(${jsonString}, '*'); true;`;
     console.log("sending object to webview");
     setTimeout(() => {
       webViewRef.current.postMessage(jsCode);
     }, 500);
-    //webViewRef.current.postMessage(jsCode);
   };
 
   const RightIcon = (props: any): IconElement => (
@@ -156,50 +136,10 @@ export default function Blocks() {
 
   return (
     <>
-      <View className="h-1/5 bg-white">
-        {variables && variables.length > 0 && (
-          <ScrollView className="h-3/5">
-            <View className="py-1">
-              <View className="flex flex-row justify-around py-2">
-                <Text style={{ fontWeight: "bold" }}>Nazwa</Text>
-                <Text style={{ fontWeight: "bold" }}>Wartość</Text>
-              </View>
-              {variables.map((variable, index) => (
-                <View
-                  key={index}
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-around",
-                  }}
-                >
-                  <Text>{variable.name}</Text>
-                  <Text>{variable.value}</Text>
-                </View>
-              ))}
-            </View>
-          </ScrollView>
-        )}
-
-        <Divider />
-        <View className="flex flex-row justify-around py-2">
-          <Button
-            onPress={() => nextBlock()}
-            appearance="ghost"
-            size="tiny"
-            accessoryLeft={RightIcon}
-          ></Button>
-          <Button onPress={() => nextBlock(true)}>Tryb ciągły</Button>
-        </View>
-      </View>
-      {/* <ScrollView
-        maximumZoomScale={2}
-        minimumZoomScale={0.5}
-        contentContainerStyle={styles.container}
-      > */}
       <ViewShot
         ref={viewShot}
-        options={{ format: "jpg", quality: 0.9 }}
-        style={{ height: "73.5%" }}
+        options={{ format: "jpg", quality: 1 }}
+        style={{ height: "93.5%" }}
       >
         <WebView
           ref={webViewRef}
@@ -209,7 +149,6 @@ export default function Blocks() {
           onLoadEnd={sendObjectToWebView}
         />
       </ViewShot>
-      {/*</ScrollView> */}
       <Button onPress={captureScreen} size="large">
         Wygeneruj PDF
       </Button>

@@ -12,7 +12,6 @@ export default function ProjectOptions({ navigation }: any) {
   const [saved, setSaved] = useState(false);
   const [idProject, setIdProject] = useState(0);
   const [fromDB, setFromDB] = useState(false);
-  // const projectProperties = route.params?.projectProperties;
 
   useEffect(() => {
     if (route.params?.id) {

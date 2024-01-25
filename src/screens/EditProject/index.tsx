@@ -7,17 +7,6 @@ import { blocksOperations } from "./blocksOperations";
 import { Button, Divider, Icon, IconElement } from "@ui-kitten/components";
 import { useRoute } from "@react-navigation/native";
 
-// type Block = {
-//   id: number;
-//   name: string;
-//   getContent: () => JSX.Element;
-//   variableName?: string;
-//   variableValue?: string;
-//   hasInside?: boolean;
-//   inside: Block[];
-//   key: number;
-// };
-
 const AddIcon = (props: any): IconElement => (
   <Icon
     {...props}
@@ -88,8 +77,6 @@ export default function EditProject({ navigation }: any) {
   let biggestKey = 0;
 
   const prepareDataToEdit = (newData, newBlocksValues = [], isMain = true) => {
-    //const newBlocksValues = [...blocksValues];
-
     const updatedData = newData.map((block) => {
       newBlocksValues[block.key] = block.valuesArray;
       if (block.key > biggestKey) {
@@ -105,7 +92,7 @@ export default function EditProject({ navigation }: any) {
     setBlocksValues(newBlocksValues);
     if (isMain) {
       setBlocks(updatedData);
-      setBlocksCounter(biggestKey + 1); // update the blocksCounter state with the biggest key plus one
+      setBlocksCounter(biggestKey + 1);
     }
 
     return updatedData;
@@ -193,19 +180,13 @@ export default function EditProject({ navigation }: any) {
         mergeBlocksAndValues(block.inside);
       }
       if (block.id === 3 || block.id === 4) {
-        //if it's if or while
         if (block.valuesArray[1] == undefined) {
           block.valuesArray[1] = 0;
         }
       }
-      // here can be added more checks for other blocks like
-      // if any value is undefined or empty send error
     });
     if (mainList) {
-      //here is ready to be sent to backend
-      //turn _blocks to json and send
       console.log(JSON.stringify(_blocks, null, 2));
-      // console.log(_blocks);
     }
   };
 
@@ -361,18 +342,8 @@ export default function EditProject({ navigation }: any) {
 
 const styles = StyleSheet.create({
   button: {
-    //set absolute position
     position: "absolute",
     bottom: 50,
     right: 5,
   },
 });
-
-{
-  /* 
-
-  Step list with start and end step
-  A button to add a new step
-  Then a list shows up with all options
-*/
-}

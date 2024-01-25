@@ -6,84 +6,73 @@ export const blocksOperations = {
       if (_blocks[i].hasInside) {
         for (let j = 0; j < _blocks[i].inside.length; j++) {
           if (_blocks[i].inside[j].key === objectKey) {
-            const objectToMove = _blocks[i].inside.splice(j, 1)[0]; // Remove object from inside[]
-            // Insert object after its immediate parent
+            const objectToMove = _blocks[i].inside.splice(j, 1)[0];
             _blocks.splice(i + 1, 0, objectToMove);
-            return true; // Return the object moved
+            return true;
           }
         }
-        // If the object wasn't found in the current level, search deeper
         const foundObject = blocksOperations.moveObjectLeft(
           _blocks[i].inside,
           objectKey
         );
-        if (foundObject) return true; // Object found and moved
+        if (foundObject) return true;
       }
     }
-    return false; // Object not found
+    return false;
   },
   moveObjectRight: (_blocks: Block[], objectKey: number) => {
     for (let i = 0; i < _blocks.length; i++) {
       if (_blocks[i].key === objectKey) {
-        const objectToMove = _blocks.splice(i, 1)[0]; // Remove object from current level
-        // Insert object inside its previous sibling
+        const objectToMove = _blocks.splice(i, 1)[0];
         _blocks[i - 1].inside.push(objectToMove);
-        return true; // Return the object moved
+        return true;
       } else if (_blocks[i].hasInside) {
-        // If the object wasn't found in the current level, search deeper
         const foundObject = blocksOperations.moveObjectRight(
           _blocks[i].inside,
           objectKey
         );
-        if (foundObject) return true; // Object found and moved
+        if (foundObject) return true;
       }
     }
-    return false; // Object not found
+    return false;
   },
   moveObjectUp: (_blocks: Block[], objectKey: number) => {
     for (let i = 0; i < _blocks.length; i++) {
       if (_blocks[i].key === objectKey) {
-        const objectToMove = _blocks.splice(i, 1)[0]; // Remove object from current level
-        // Insert object before its previous sibling
+        const objectToMove = _blocks.splice(i, 1)[0];
         _blocks.splice(i - 1, 0, objectToMove);
-        return true; // Return the object moved
+        return true;
       } else if (_blocks[i].hasInside) {
-        // If the object wasn't found in the current level, search deeper
         const foundObject = blocksOperations.moveObjectUp(
           _blocks[i].inside,
           objectKey
         );
-        if (foundObject) return true; // Object found and moved
+        if (foundObject) return true;
       }
     }
-    return false; // Object not found
+    return false;
   },
   moveObjectDown: (_blocks: Block[], objectKey: number) => {
     for (let i = 0; i < _blocks.length; i++) {
       if (_blocks[i].key === objectKey) {
-        const objectToMove = _blocks.splice(i, 1)[0]; // Remove object from current level
-        // Insert object after its next sibling
+        const objectToMove = _blocks.splice(i, 1)[0];
         _blocks.splice(i + 1, 0, objectToMove);
-        return true; // Return the object moved
+        return true;
       } else if (_blocks[i].hasInside) {
-        // If the object wasn't found in the current level, search deeper
         const foundObject = blocksOperations.moveObjectDown(
           _blocks[i].inside,
           objectKey
         );
-        if (foundObject) return true; // Object found and moved
+        if (foundObject) return true;
       }
     }
-    return false; // Object not found
+    return false;
   },
   addBlockToEnd: (_blocks: Block[], newBlock: Block) => {
     const lastItem = _blocks[_blocks.length - 1];
     if (!lastItem || !lastItem.hasInside) {
-      // If the last item doesn't exist or doesn't allow inside elements,
-      // add the value to the end of the current array
       _blocks.push(newBlock);
     } else {
-      // If the last item allows inside elements, recursively check its inside array
       blocksOperations.addBlockToEnd(lastItem.inside, newBlock);
     }
   },
@@ -92,7 +81,6 @@ export const blocksOperations = {
       if (_blocks[i].key === objectKey) {
         const deletedItem = _blocks.splice(i, 1)[0];
         if (deletedItem.hasInside && deletedItem.inside.length > 0) {
-          // Move inside elements one layer up
           _blocks.splice(i, 0, ...deletedItem.inside);
         }
         return true;
