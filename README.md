@@ -1,5 +1,5 @@
 https://github.com/kacaleksandra/szalone_bloczki/assets/49205215/ff016902-f1ad-4705-8fa7-51793eb56d7a
-
+ 
 <h1 align="center">🧩 SzaloneBloczki - "Crazy Blocks"</h1>
 
 <p align="center">
